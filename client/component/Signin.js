@@ -2,13 +2,26 @@ import React, { useState } from "react"
 import { View, Text, TextInput, Image, Button, StyleSheet } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
+import { StackActions } from '@react-navigation/native';
 
 
-function Signin() {
+const popAction = StackActions.pop();
+
+function Signin({ navigation }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  function reset() {
+    return navigation
+      .dispatch(NavigationActions.reset(
+        {
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Menu' })
+          ]
+        }));
+  }
   function handleLoginBtn() {
     axios.post('https://don-forget-server.com/user/signin', {
       email: email,
@@ -22,6 +35,11 @@ function Signin() {
         console.log("password:", password);
         console.log(response)
         alert("로그인!")
+      })
+      .then(() => {
+        navigation.dispatch(popAction);
+        navigation.dispatch(popAction);
+        navigation.navigate("Tabs");
       })
       .catch((err) => console.log(err));
   }

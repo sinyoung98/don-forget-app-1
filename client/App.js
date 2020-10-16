@@ -1,38 +1,44 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { useState } from "react";
+import { Button, Text, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Intro from "./component/Intro"
+import Home from "./component/Home"
+import Schdule from "./component/Schedule"
+import Search from "./component/Search"
+import Mypage from "./component/Mypage"
+import Signin from "./component/Signin"
 
-import Tab from "./Tab";
-import Intro from './component/Intro';
-import Signin from './component/Signin';
 
-//ver 4.x
-// 전환하게 될 컴포넌트 등록
-// const Stack = createStackNavigator({
-//   "Intro": { screen: Intro },
-//   "Signin": { screen: Signin },
-// }, {
-//   // 맨 처음에 띄울 페이지
-//   intialRouteName: "Intro"
-// })
 
-// version 4.x: createStackNavigator()에 객체로 screen을 설정,
-// key=스크린 이름(변수) / value=컴포넌트 이름
 
-// version 5.x: <Stack.Screen>을 통해 각각의 스크린을 설정
-// name=스크린 이름(변수) / component=컴포넌트 이름
-const Stack = createStackNavigator()
+
+
+const BottomTab = createBottomTabNavigator();
+
+function Tabs() {
+  return (
+    <BottomTab.Navigator>
+      <BottomTab.Screen name="home" component={Home} />
+      <BottomTab.Screen name="schedule" component={Schdule} />
+      <BottomTab.Screen name="search" component={Search} />
+      <BottomTab.Screen name="mypage" component={Mypage} />
+    </BottomTab.Navigator>
+  );
+}
+
+const Stack = createStackNavigator();
 
 export default function App() {
+  return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Intro">
-        <Stack.Screen name="Intro" component={Intro} options={{ title: 'Don-forget' }} />
-        <Stack.Screen name="Signin" component={Signin} options={{ title: 'Login' }} />
-        <Stack.Screen name="Tab" component={Tab}/>
+      <Stack.Navigator initialRouteName="intro">
+        <Stack.Screen name="intro" component={Intro} />
+        <Stack.Screen name="Signin" component={Signin} />
+        <Stack.Screen name="Tabs" component={Tabs} />
       </Stack.Navigator>
-      <Tab />
     </NavigationContainer>
-  )
+  );
 }
