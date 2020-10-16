@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Tab from "./Tab";
-
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import Tab from "./Tab";
 import Intro from './component/Intro';
 import Signin from './component/Signin';
 
@@ -33,8 +31,8 @@ export default function App() {
       <Stack.Navigator initialRouteName="Intro">
         <Stack.Screen name="Intro" component={Intro} options={{ title: 'Don-forget' }} />
         <Stack.Screen name="Signin" component={Signin} options={{ title: 'Login' }} />
-        <Tab />
       </Stack.Navigator>
+      <Tab />
     </NavigationContainer>
   );
 }
