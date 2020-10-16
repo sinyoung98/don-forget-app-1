@@ -17,10 +17,10 @@ const BottomTab = createBottomTabNavigator();
 function Tabs() {
   return (
     <BottomTab.Navigator>
-      <BottomTab.Screen name="home" component={Home} />
-      <BottomTab.Screen name="schedule" component={Schdule} />
-      <BottomTab.Screen name="search" component={Search} />
-      <BottomTab.Screen name="mypage" component={Mypage} />
+      <BottomTab.Screen name="Home" component={Home} />
+      <BottomTab.Screen name="Schedule" component={Schdule} />
+      <BottomTab.Screen name="Search" component={Search} />
+      <BottomTab.Screen name="Mypage" component={Mypage} />
     </BottomTab.Navigator>
   );
 }
@@ -29,21 +29,21 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setLoading] = useState(true);
-  
+
   useEffect(() => {
-    setTimeout(() => {setLoading(false)}, 3000)
+    setTimeout(() => { setLoading(false) }, 3000)
   }, [])
 
   return (
     <>
-    {isLoading ? <Intro /> :  <NavigationContainer>
-      <Stack.Navigator initialRouteName="Signin">
-        <Stack.Screen name="intro" component={Intro} style={styles.stackNavigation} options={{ title: 'Welcome' }}/>
-        <Stack.Screen name="Signin" component={Signin} options={{ title: '로그인' }}/>
-        <Stack.Screen name="Tabs" component={Tabs} />
-        <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }}/>
-      </Stack.Navigator>
-    </NavigationContainer> }
+      {isLoading ? <Intro /> : <NavigationContainer>
+        <Stack.Navigator initialRouteName="Signin">
+          <Stack.Screen name="intro" component={Intro} style={styles.stackNavigation} options={{ title: 'Welcome' }} />
+          <Stack.Screen name="Signin" component={Signin} options={{ title: '로그인' }} />
+          <Stack.Screen name="Tabs" component={Tabs} />
+          <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }} />
+        </Stack.Navigator>
+      </NavigationContainer>}
     </>
   );
 }

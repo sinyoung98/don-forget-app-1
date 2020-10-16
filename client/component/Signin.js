@@ -114,32 +114,32 @@ const styles = StyleSheet.create({
     margin: "3%",
   },
   button: {
-    position : "relative",
-    top : "-0%",
-    width : "80%",
-    height : "7%",
-    borderRadius : 5,
-    backgroundColor : "#211ebf",
+    position: "relative",
+    top: "-0%",
+    width: "80%",
+    height: "7%",
+    borderRadius: 5,
+    backgroundColor: "#211ebf",
   },
-  text : {
-    color : "white",
-    textAlign : "center",
-    padding : 12
+  text: {
+    color: "white",
+    textAlign: "center",
+    padding: 12
   },
-  link :{
-    position : "relative",
-    top : "11%",
-    left : "-25%",
-    color : "#4c52f7",
-    fontSize : 13,
-    marginTop : 10
+  link: {
+    position: "relative",
+    top: "11%",
+    left: "-25%",
+    color: "#4c52f7",
+    fontSize: 13,
+    marginTop: 10
   },
-  registor_link : {
-    position : "relative",
-    top : "-90%",
-    left : "30%",
-    color : "#4c52f7",
-    fontSize : 13,
-    marginTop : 10
+  registor_link: {
+    position: "relative",
+    top: "-90%",
+    left: "30%",
+    color: "#4c52f7",
+    fontSize: 13,
+    marginTop: 10
   },
 })
