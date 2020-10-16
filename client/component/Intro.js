@@ -6,13 +6,9 @@ function Intro({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Button
-        title="LOGIN"
-        onPress={() => navigation.navigate('Signin')}
-      />
       <Image style={styles.logo} source={Logo} alt="Logo_don-forget" />
       <Text style={styles.title}>돈't forget</Text>
-      <Text style={styles.desc} multiline={true}>laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium</Text>
+      {/* <Text style={styles.desc} multiline={true}>laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium</Text> */}
     </View>
   )
 };
@@ -36,6 +32,6 @@ const styles = StyleSheet.create({
   },
   desc: {
     width: 300,
-  }
+  },
 });
 

@@ -1,27 +1,16 @@
 import React, { useState } from "react"
-import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
 import { StackActions } from '@react-navigation/native';
-
-
-const popAction = StackActions.pop();
+import { nominalTypeHack } from "prop-types";
+import { withTheme } from "react-native-elements";
 
 function Signin({ navigation }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function reset() {
-    return navigation
-      .dispatch(NavigationActions.reset(
-        {
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Menu' })
-          ]
-        }));
-  }
   function handleLoginBtn() {
     axios.post('https://don-forget-server.com/user/signin', {
       email: email,
@@ -33,20 +22,13 @@ function Signin({ navigation }) {
       .then((response) => {
         console.log("email:", email);
         console.log("password:", password);
-
         AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(response));
         alert(`${response.name}님이 로그인되셨습니다`);
-
-        navigation.navigate('Home')
+        navigation.navigate("Tabs");
       })
       .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
         console.log("AsyncStorage:", result)
       }))
-      .then(() => {
-        navigation.dispatch(popAction);
-        navigation.dispatch(popAction);
-        navigation.navigate("Tabs");
-      })
       .catch((err) => console.log(err));
   }
 
@@ -55,27 +37,35 @@ function Signin({ navigation }) {
       <Image style={styles.logo} source={Logo} alt="Logo_don-forget" />
       <Text style={styles.title}>Login</Text>
       <TextInput
-        style={styles.input}
+        style={email ? styles.inputfocus : styles.input}
         onChangeText={text => setEmail(text)}
         placeholder="Email Address *"
         autoCapitalize="none"
         value={email}
+        placeholderTextColor
       />
       <TextInput
-        style={styles.input}
+        style={email ? styles.inputfocus : styles.input}
         onChangeText={text => setPassword(text)}
         placeholder="Password *"
         autoCapitalize="none"
         value={password}
       />
-      <Button
-        title="LOGIN"
-        onPress={handleLoginBtn}
-      />
+
+      <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleLoginBtn}>
+        <Text style={styles.text}>LOGIN</Text>
+      </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.8} onPress={handleLoginBtn}>
+        <Text style={styles.link}>Forgot Password?</Text>
+      </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.8} onPress={handleLoginBtn}>
+        <Text style={styles.registor_link}>회원가입</Text>
+      </TouchableOpacity>
     </View>
   )
 };
 export default Signin;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -85,20 +75,71 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    width: 50,
+    position: "absolute",
+    top: "10%",
+    width: "13%",
     height: 40,
   },
   title: {
-    fontWeight: "700",
+    position: "absolute",
+    top: "16%",
+    fontWeight: "500",
     fontSize: 25,
     margin: 10,
   },
   input: {
-    width: 200,
+    position: "relative",
+    top: "-5%",
+    width: "80%",
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 6,
-    padding: 5,
-    margin: 3
-  }
+    padding: "3%",
+    margin: "3%",
+  },
+  inputfocus: {
+    position: "relative",
+    top: "-5%",
+    width: "80%",
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderColor: '#211ebf',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: "3%",
+    margin: "3%",
+  },
+  button: {
+    position: "relative",
+    top: "-0%",
+    width: "80%",
+    height: "7%",
+    borderRadius: 5,
+    backgroundColor: "#211ebf",
+  },
+  text: {
+    color: "white",
+    textAlign: "center",
+    padding: 12
+  },
+  link: {
+    position: "relative",
+    top: "11%",
+    left: "-25%",
+    color: "#4c52f7",
+    fontSize: 13,
+    marginTop: 10
+  },
+  registor_link: {
+    position: "relative",
+    top: "-90%",
+    left: "30%",
+    color: "#4c52f7",
+    fontSize: 13,
+    marginTop: 10
+  },
 })
