@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Tab from "./Tab";
+import Home from "./Home";
 import Intro from './component/Intro';
 import Signin from './component/Signin';
 
@@ -31,9 +31,15 @@ export default function App() {
       <Stack.Navigator initialRouteName="Intro">
         <Stack.Screen name="Intro" component={Intro} options={{ title: 'Don-forget' }} />
         <Stack.Screen name="Signin" component={Signin} options={{ title: 'Login' }} />
+
+        {/* 로그인 후 페이지 이동 테스트용 */}
+        <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
-      <Tab />
     </NavigationContainer>
   );
 }
 
+
+// 로그인전에 인트로,로그인,회원가입 하나의 스택으로있고 
+// 로그인전에는 탭 display none, 탭에 로그인버튼 없고 인트로페이지에 따로
+// 탭 위에 있는 스택은 
