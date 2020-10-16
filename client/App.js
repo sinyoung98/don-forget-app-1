@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Text, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -10,17 +10,7 @@ import Schdule from "./component/Schedule"
 import Search from "./component/Search"
 import Mypage from "./component/Mypage"
 import Signin from "./component/Signin"
-
-<<<<<<< HEAD
-import Home from "./Home";
-import Intro from './component/Intro';
-import Signin from './component/Signin';
-=======
->>>>>>> 0ba6e9f3e504600be3d2184b46d5f4a4aa96e89b
-
-
-
-
+import Signup from "./component/Signup"
 
 const BottomTab = createBottomTabNavigator();
 
@@ -38,30 +28,43 @@ function Tabs() {
 const Stack = createStackNavigator();
 
 export default function App() {
-  return (
-    <NavigationContainer>
-<<<<<<< HEAD
-      <Stack.Navigator initialRouteName="Intro">
-        <Stack.Screen name="Intro" component={Intro} options={{ title: 'Don-forget' }} />
-        <Stack.Screen name="Signin" component={Signin} options={{ title: 'Login' }} />
+  const [isLoading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    setTimeout(() => {setLoading(false)}, 3000)
+  }, [])
 
-        {/* 로그인 후 페이지 이동 테스트용 */}
-        <Stack.Screen name="Home" component={Home} />
-=======
-      <Stack.Navigator initialRouteName="intro">
-        <Stack.Screen name="intro" component={Intro} />
-        <Stack.Screen name="Signin" component={Signin} />
+  return (
+    <>
+    {isLoading ? <Intro /> :  <NavigationContainer>
+      <Stack.Navigator initialRouteName="Signin">
+        <Stack.Screen name="intro" component={Intro} style={styles.stackNavigation} options={{ title: 'Welcome' }}/>
+        <Stack.Screen name="Signin" component={Signin} options={{ title: '로그인' }}/>
         <Stack.Screen name="Tabs" component={Tabs} />
->>>>>>> 0ba6e9f3e504600be3d2184b46d5f4a4aa96e89b
+        <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }}/>
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer> }
+    </>
   );
 }
-<<<<<<< HEAD
 
 
-// 로그인전에 인트로,로그인,회원가입 하나의 스택으로있고 
-// 로그인전에는 탭 display none, 탭에 로그인버튼 없고 인트로페이지에 따로
-// 탭 위에 있는 스택은 
-=======
->>>>>>> 0ba6e9f3e504600be3d2184b46d5f4a4aa96e89b
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: "blue"
+  },
+  title: {
+    marginTop: 16,
+    paddingVertical: 8,
+    borderWidth: 4,
+    borderColor: "#20232a",
+    borderRadius: 6,
+    backgroundColor: "#61dafb",
+    color: "#20232a",
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold"
+  }
+});
