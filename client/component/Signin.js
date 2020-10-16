@@ -12,16 +12,6 @@ function Signin({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function reset() {
-    return navigation
-      .dispatch(NavigationActions.reset(
-        {
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Menu' })
-          ]
-        }));
-  }
   function handleLoginBtn() {
     axios.post('https://don-forget-server.com/user/signin', {
       email: email,
@@ -37,7 +27,6 @@ function Signin({ navigation }) {
         alert("로그인!")
       })
       .then(() => {
-        navigation.dispatch(popAction);
         navigation.dispatch(popAction);
         navigation.navigate("Tabs");
       })
