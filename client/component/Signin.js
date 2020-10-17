@@ -2,9 +2,6 @@ import React, { useState } from "react"
 import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
-import { StackActions } from '@react-navigation/native';
-import { nominalTypeHack } from "prop-types";
-import { withTheme } from "react-native-elements";
 
 function Signin({ navigation }) {
 
@@ -42,10 +39,9 @@ function Signin({ navigation }) {
         placeholder="Email Address *"
         autoCapitalize="none"
         value={email}
-        placeholderTextColor
       />
       <TextInput
-        style={email ? styles.inputfocus : styles.input}
+        style={password ? styles.inputfocus : styles.input}
         onChangeText={text => setPassword(text)}
         placeholder="Password *"
         autoCapitalize="none"
@@ -55,10 +51,12 @@ function Signin({ navigation }) {
       <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleLoginBtn}>
         <Text style={styles.text}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} onPress={handleLoginBtn}>
+      <TouchableOpacity activeOpacity={0.8}>
         <Text style={styles.link}>Forgot Password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} onPress={handleLoginBtn}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => {
+        navigation.navigate("Signup")
+      }}>
         <Text style={styles.registor_link}>회원가입</Text>
       </TouchableOpacity>
     </View>

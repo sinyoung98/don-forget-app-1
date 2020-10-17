@@ -9,11 +9,15 @@ export default function Home() {
 
   const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
-      setUserData(JSON.parse(result));
-    });
-  })
+  // useEffect(async () => {
+  //   let result = await AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
+  //     setUserData(JSON.parse(result));
+  //   });
+
+  //   return () => {
+  //     console.log(result);
+  //   }
+  // }, [])
 
   const vacation = { key: 'vacation', color: 'red' };
   const massage = { key: 'massage', color: 'blue' };
