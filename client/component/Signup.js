@@ -1,55 +1,229 @@
 import React, { useState } from "react"
-import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet} from 'react-native';
+import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
+import RNPickerSelect from 'react-native-picker-select';
 
-export default function Signup(){
-    return (
-        <View style={styles.container}>
-              <Image style={styles.logo} source={Logo} alt="Logo_don-forget" />
+export default function Signup({ navigation }) {
+
+  const [inputEmail, setEmail] = useState("");
+  const [inputPW, setPW] = useState("");
+  const [inputName, setName] = useState("");
+  const [inputPWCheck, setPWCheck] = useState("");
+  const [passwordHint, setHint] = useState(null);
+  const [hintAnswer, setAnswer] = useState("");
+
+
+  const createEmailAlert = () =>
+    Alert.alert(
+      "⚠️ Error",
+      " 유효하지 않은 이메일입니다",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
+
+  const createPWAlert = () =>
+  Alert.alert(
+    "⚠️ Error",
+    "비밀번호가 일치하지 않습니다",
+    [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") }
+    ],
+    { cancelable: false }
+  );
+
+  function handleSignupBtn() {
+    console.log(inputEmail, inputPW, inputName, passwordHint, hintAnswer)
+    if (!validate(inputEmail)){
+      createEmailAlert();
+    }
+    else if ((inputPW === inputPWCheck) || inputPW !== ""){
+      createPWAlert();
+    } 
+    else{
+      axios.post("https://don-forget-server.com/user/signup", {
+        email: inputEmail,
+        password: inputPW,
+        name: inputName,
+        type: passwordHint,
+        password_answer: hintAnswer
+      }, {
+        headers: { "Access-Control-Allow-Origin": "*" }
+      })
+        .then((res) => console.log(res.data))
+        .then(() => navigation.navigate("Signin"))
+        .catch((err) => console.log(err))
+    }
+}
+
+  function validate(text){
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(text) === false) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+
+  return (
+    <View style={styles.container}>
+      <Image style={styles.logo} source={Logo} alt="Logo_don-forget" />
       <Text style={styles.title}>회원가입</Text>
+      <TextInput
+        style={inputEmail ? styles.inputfocus : styles.input}
+        onChangeText={text => setEmail(text)}
+        placeholder="Email Address *"
+        autoCapitalize="none"
+        value={inputEmail}
+      />
+      <TextInput
+        style={inputName ? styles.inputfocus : styles.input}
+        onChangeText={text => setName(text)}
+        placeholder="Name *"
+        autoCapitalize="none"
+        value={inputName}
+      />
+      <TextInput
+        style={inputPW ? styles.inputfocus : styles.input}
+        onChangeText={text => setPW(text)}
+        placeholder="Password *"
+        autoCapitalize="none"
+        value={inputPW}
+      />
+      <TextInput
+        style={inputPWCheck ? styles.inputfocus : styles.input}
+        onChangeText={text => setPWCheck(text)}
+        placeholder="PasswordCheck *"
+        autoCapitalize="none"
+        value={inputPWCheck}
+      />
+      <TouchableOpacity activeOpacity={0.8} style={styles.select}>
+        <RNPickerSelect
+          style={styles.select}
+          placeholder={{
+            label: 'Password Hint *',
+            value: null,
+          }}
+          onValueChange={(value) => setHint(value)}
+          items={[
+            { label: '가장 기억에 남는 선생님 성함은?', value: 1, key: 1 },
+            { label: '내가 존경하는 인물은?', value: 2, key: 2 },
+            { label: '나의 노래방 애창곡은?', value: 3, key: 3 },
+          ]}
+        />
+      </TouchableOpacity>
+      <TextInput
+        style={hintAnswer ? styles.inputfocus : styles.input}
+        onChangeText={text => setAnswer(text)}
+        placeholder="PasswordCheck *"
+        autoCapitalize="none"
+        value={hintAnswer}
+      />
+      <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleSignupBtn}>
+        <Text style={styles.text}>회원가입</Text>
+      </TouchableOpacity>
     </View>
-    )
+  )
 }
 
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    logo: {
-      width: 50,
-      height: 40,
-    },
-    title: {
-      fontWeight: "500",
-      fontSize: 25,
-      margin: 10,
-    },
-    input: {
-      width: 200,
-      borderTopWidth: 0,
-      borderLeftWidth : 0,
-      borderRightWidth : 0,
-      borderColor: 'gray',
-      borderWidth: 1,
-      borderRadius: 6,
-      padding: 5,
-      margin: 3,
-    },
-    inputfocus : {
-      borderTopWidth: 0,
-      borderLeftWidth : 0,
-      borderRightWidth : 0,
-      width: 200,
-      borderColor: 'blue',
-      borderWidth: 1,
-      borderRadius: 6,
-      padding: 5,
-      margin: 3
-    }
-  })
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    position: "absolute",
+    top: "10%",
+    width: "13%",
+    height: 40,
+  },
+  title: {
+    position: "absolute",
+    top: "16%",
+    fontWeight: "500",
+    fontSize: 20,
+    margin: 10,
+  },
+  input: {
+    position: "relative",
+    top: "8%",
+    width: "75%",
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: "2%",
+    margin: "3%",
+  },
+  inputfocus: {
+    position: "relative",
+    top: "8%",
+    width: "75%",
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderColor: '#211ebf',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: "2.5%",
+    margin: "3%",
+  },
+  button: {
+    position: "relative",
+    top: "10%",
+    width: "80%",
+    height: "7%",
+    borderRadius: 5,
+    backgroundColor: "#211ebf",
+  },
+  text: {
+    color: "white",
+    textAlign: "center",
+    padding: 12
+  },
+  link: {
+    position: "relative",
+    top: "11%",
+    left: "-25%",
+    color: "#4c52f7",
+    fontSize: 13,
+    marginTop: 10
+  },
+  registor_link: {
+    position: "relative",
+    top: "-90%",
+    left: "30%",
+    color: "#4c52f7",
+    fontSize: 13,
+    marginTop: 10
+  },
+  select: {
+    position: "relative",
+    top: "8%",
+    width: "74%",
+    height: "5%",
+    margin: "3%",
+    padding: "2%",
+    borderBottomWidth: 1
+  }
+})
