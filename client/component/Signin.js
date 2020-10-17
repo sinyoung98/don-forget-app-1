@@ -51,8 +51,11 @@ function Signin({ navigation }) {
       <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleLoginBtn}>
         <Text style={styles.text}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8}>
-        <Text style={styles.link}>Forgot Password?</Text>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => {
+        console.log("hi")
+        navigation.navigate("FindPW")
+      }}>
+        <Text style={styles.link} >Forgot Password?</Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.8} onPress={() => {
         navigation.navigate("Signup")
