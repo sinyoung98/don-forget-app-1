@@ -50,7 +50,8 @@ export default function Signup({ navigation }) {
     if (!validate(inputEmail)){
       createEmailAlert();
     }
-    else if ((inputPW === inputPWCheck) || inputPW !== ""){
+    else if ((inputPW !== inputPWCheck) || inputPW === ""){
+      console.log(inputPWCheck);
       createPWAlert();
     } 
     else{
