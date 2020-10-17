@@ -11,13 +11,14 @@ import Search from "./component/Search"
 import Mypage from "./component/Mypage"
 import Signin from "./component/Signin"
 import Signup from "./component/Signup"
+import FindPW from "./component/FindPW"
 
 const BottomTab = createBottomTabNavigator();
 
 function Tabs() {
   return (
     <BottomTab.Navigator>
-      <BottomTab.Screen name="Home" component={Home} />
+      <BottomTab.Screen name="Home" component={Home}/>
       <BottomTab.Screen name="Schedule" component={Schdule} />
       <BottomTab.Screen name="Search" component={Search} />
       <BottomTab.Screen name="Mypage" component={Mypage} />
@@ -40,8 +41,9 @@ export default function App() {
         <Stack.Navigator initialRouteName="Signin">
           <Stack.Screen name="intro" component={Intro} style={styles.stackNavigation} options={{ title: 'Welcome' }} />
           <Stack.Screen name="Signin" component={Signin} options={{ title: '로그인' }} />
-          <Stack.Screen name="Tabs" component={Tabs} />
+          <Stack.Screen name="Tabs" component={Tabs}  options={{ title: 'Home' }} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }} />
+          <Stack.Screen name="FindPW" component={FindPW} options={{ title: '비밀번호 찾기' }} />
         </Stack.Navigator>
       </NavigationContainer>}
     </>
