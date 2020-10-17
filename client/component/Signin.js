@@ -24,7 +24,7 @@ function Signin({ navigation }) {
         navigation.navigate("Tabs");
       })
       .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
-        console.log("AsyncStorage:", result)
+        console.log("AsyncStorage:", result);
       }))
       .catch((err) => console.log(err));
   }
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     top: "10%",
     width: "13%",
     height: 40,
+    resizeMode: "contain"
   },
   title: {
     position: "absolute",
