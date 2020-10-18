@@ -1,10 +1,11 @@
 
 import React, { useState } from "react"
-import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button,} from 'react-native';
 import axios from "axios";
 import { withTheme } from "react-native-elements";
+import { StackActions } from "@react-navigation/native";
 
-export default function FindPW() {
+export default function FindPW({navigation}) {
 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
@@ -13,25 +14,29 @@ export default function FindPW() {
     const [id, getUserid] = useState("");
 
     function handleStepOne() {
-        console.log("wow");
-        console.log(email, name);
-        axios.post('https://don-forget-server.com/user/findpassword/stepone', {
-            name: name,
-            email: email
-        })
-            .then((response) => response.data)
-            .then((data) => {
-                console.log(data);
-                setQuestion(data.password_question);
-                setAnswer(data.password_answer);
-                getUserid(data.id)
-                console.log(question, answer, id);
-            })
-            .catch((err) => console.log(err))
+        // console.log("wow");
+        // console.log(email, name);
+        // axios.post('https://don-forget-server.com/user/findpassword/stepone', {
+        //     name: name,
+        //     email: email
+        // })
+        //     .then((response) => response.data)
+        //     .then((data) => {
+        //         console.log(data);
+        //         setQuestion(data.password_question);
+        //         setAnswer(data.password_answer);
+        //         getUserid(data.id)
+        //         console.log(question, answer, id);
+        //     })
+        //     .catch((err) => console.log(err))
+
+    navigation.dispatch(
+        StackActions.replace(`FindPwTwo`, {question : "가장 기억에 남는 선생님 성함은?", answer : "sinyoung", id : "14"})
+    );
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Step one</Text>
+            <Text style={styles.title}>Step one 1.</Text>
             <Text style={styles.text}>비밀번호를 찾고자 하는 아이디와 이름을 입력해주세요</Text>
             <TextInput
                 style={email ? styles.inputfocus : styles.input}
@@ -50,6 +55,8 @@ export default function FindPW() {
             <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleStepOne}>
                 <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
+
+            
         </View>
     )
 }
