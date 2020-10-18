@@ -12,6 +12,8 @@ import Mypage from "./component/Mypage"
 import Signin from "./component/Signin"
 import Signup from "./component/Signup"
 import FindPW from "./component/FindPW"
+import FindPwTwo from "./component/FindPwTwo"
+import FindPwThree from "./component/FindPwThree"
 
 const BottomTab = createBottomTabNavigator();
 
@@ -44,6 +46,8 @@ export default function App() {
           <Stack.Screen name="Tabs" component={Tabs}  options={{ title: 'Home' }} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }} />
           <Stack.Screen name="FindPW" component={FindPW} options={{ title: '비밀번호 찾기' }} />
+          <Stack.Screen name="FindPwTwo" component={FindPwTwo} options={{ title: '비밀번호 찾기' }} />
+          <Stack.Screen name="FindPwThree" component={FindPwThree} options={{ title: '비밀번호 찾기' }} />
         </Stack.Navigator>
       </NavigationContainer>}
     </>

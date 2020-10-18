@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
+import { StackActions } from "@react-navigation/native"
 
 function Signin({ navigation }) {
 
@@ -21,7 +22,8 @@ function Signin({ navigation }) {
         console.log("password:", password);
         AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(response));
         alert(`${response.name}님이 로그인되셨습니다`);
-        navigation.navigate("Tabs");
+        navigation.dispatch(StackActions.popToTop);
+        navigation.replace(`Tabs`)
       })
       .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
         console.log("AsyncStorage:", result);
