@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { AsyncStorage, View, Text, TouchableOpacity, StyleSheet } from "react-native"
+import { AsyncStorage, View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from "react-native"
 import moment, { Moment as MomentTypes } from 'moment';
 import axios from "axios"
 
@@ -9,9 +9,14 @@ export default function Home() {
   const [userData, setUserData] = useState(null);
   // 일정 받아오기
   const [data, setData] = useState(null);
+  // 월 선택 모달
+  const [openSelectMonth, setOpenSelectMonth] = useState(false)
+  const [year, setYear] = useState(moment().year())
   // 선택한 날짜
   const [selectedDate, setSelectedDate] = useState(moment());
-  const [month, setMonth] = useState(selectedDate._locale._months[selectedDate.month()])
+  const [month, setMonth] = useState(selectedDate._locale._months[selectedDate.month()]);
+  // 하단 일정 창 오픈
+  const [openSchedule, setOpenSchedule] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -67,9 +72,11 @@ export default function Home() {
                   onPress={() => {
                     // 선택한 날짜로 이동
                     setSelectedDate(current)
+                    // 하단 일정 오픈
+                    setOpenSchedule(true)
                   }}
                 >
-                  <View style={styles[`text${isSelected}`]}>
+                  <View style={openSchedule ? styles[`top_dateBox${isSelected}${endWeek - startWeek + 1}`] : styles[`full_dateBox${isSelected}${endWeek - startWeek + 1}`]}>
                     <Text style={styles[`font${isSunday}${isSaturday}${isGrayed}`]}>{current.format('D')}</Text>
                     <Text style={{ flexDirection: "column", justifyContent: "flex-start", alignItems: 'stretch', }}>
                       {/* 일정 유무 확인해서 달력 위에 랜더 */}
@@ -97,7 +104,65 @@ export default function Home() {
     return calendar;
   }
 
-  return (<>
+  const monthModal = () => {
+    return (<>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => setYear(year - 1)}><Text>&lt;</Text></TouchableOpacity>
+      <View style={styles.selectMonth_Text}><Text>{year}</Text></View>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => setYear(year + 1)}><Text>&gt;</Text></TouchableOpacity>
+      <View style={styles.selectMonth_Line}></View>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(0).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>JAN</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(1).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>FEB</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(2).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>MAR</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(3).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>APR</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(4).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>MAY</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(5).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>JUN</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(6).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>JUL</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(7).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>AUG</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(8).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>SEP</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(9).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>OCT</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(10).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>NOV</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
+        setSelectedDate(moment().year(year).month(11).date(1));
+        setOpenSelectMonth(!openSelectMonth);
+      }}><Text>DEC</Text></TouchableOpacity>
+    </>
+    )
+  }
+
+  return (<ScrollView style={{ backgroundColor: "#fff", height: Dimensions.get('window').height }}>
     <View style={styles.calendar}>
       <View style={styles.head}>
         {/* 화살표로 월 앞/뒤 이동 */}
@@ -106,12 +171,19 @@ export default function Home() {
             let num = moment().month(month).format("M") - 2;
             setSelectedDate(moment().month(num).date(1))
           }}><Text>&lt;</Text></TouchableOpacity>
-        <Text style={styles.title}>{month}</Text>
+        <TouchableOpacity onPress={() => setOpenSelectMonth(!openSelectMonth)}>
+          <Text style={styles.title}>{month}</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.arrow}
           onPress={() => {
             let num = moment().month(month).format("M");
             setSelectedDate(moment().month(num).date(1))
           }}><Text>&gt;</Text></TouchableOpacity>
+      </View>
+
+      {/* 월 선택 모달 */}
+      <View style={openSelectMonth ? styles.selectMonth : styles.none}>
+        {monthModal()}
       </View>
 
       <View style={styles.row}>
@@ -126,9 +198,14 @@ export default function Home() {
       {generate()}
     </View>
 
-    <View style={styles.schedule}>
-      <Text style={styles.title}>{selectedDate.format("M[/]D[(]ddd[)]")}</Text>
-
+    <View style={openSchedule ? styles.schedule : styles.none}>
+      <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+        <Text style={styles.title}>{selectedDate.format("M[/]D[(]ddd[)]")}</Text>
+        <TouchableOpacity style={{ padding: 20 }}
+          onPress={() => setOpenSchedule(false)}>
+          <Text>✕</Text>
+        </TouchableOpacity>
+      </View>
       {/* 일정 유무 확인해서 달력 하단에 랜더 */}
       <View style={styles.scheduleList}>
         {(data !== null) ?
@@ -151,24 +228,28 @@ export default function Home() {
       </View>
     </View>
 
-  </>)
+  </ScrollView>)
 }
 
 const styles = StyleSheet.create({
+  none: {
+    display: "none"
+  },
   calendar: {
-    flex: 2,
     padding: 10,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    height: "auto"
   },
   head: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignSelf: "center",
   },
   title: {
     padding: 15,
     fontSize: 20,
     fontWeight: "700",
-    color: "#4a4a4a"
+    color: "#4a4a4a",
   },
   arrow: {
     fontSize: 25,
@@ -189,20 +270,110 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "grey"
   },
-  text: {
+  full_dateBox4: {
     borderColor: "grey",
     borderTopWidth: 1,
     borderStyle: "solid",
-    height: 60,
+    height: Dimensions.get('window').height / 8,
     margin: 5,
     paddingHorizontal: 2,
     paddingVertical: 5
   },
-  text_selected: {
+  full_dateBox_selected4: {
     borderColor: "grey",
     borderWidth: 1,
     borderStyle: "solid",
-    height: 60,
+    height: Dimensions.get('window').height / 8,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  full_dateBox5: {
+    borderColor: "grey",
+    borderTopWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 10,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  full_dateBox_selected5: {
+    borderColor: "grey",
+    borderWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 10,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  full_dateBox6: {
+    borderColor: "grey",
+    borderTopWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 12,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  full_dateBox_selected6: {
+    borderColor: "grey",
+    borderWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 12,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  top_dateBox4: {
+    borderColor: "grey",
+    borderTopWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 11,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  top_dateBox_selected4: {
+    borderColor: "grey",
+    borderWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 11,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  top_dateBox5: {
+    borderColor: "grey",
+    borderTopWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 14,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  top_dateBox_selected5: {
+    borderColor: "grey",
+    borderWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 14,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  top_dateBox6: {
+    borderColor: "grey",
+    borderTopWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 16,
+    margin: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 5
+  },
+  top_dateBox_selected6: {
+    borderColor: "grey",
+    borderWidth: 1,
+    borderStyle: "solid",
+    height: Dimensions.get('window').height / 16,
     margin: 5,
     paddingHorizontal: 2,
     paddingVertical: 5
@@ -229,9 +400,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 
+
   schedule: {
     flex: 1,
-    padding: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    padding: 5,
     backgroundColor: "#fff",
     borderColor: "grey",
     borderTopWidth: 1,
@@ -252,6 +426,33 @@ const styles = StyleSheet.create({
   scheduleListEntry_gift: {
     color: "slategray",
     fontSize: 13
+  },
+
+  selectMonth: {
+    position: 'absolute',
+    zIndex: 1,
+    marginTop: 60,
+    backgroundColor: "#ededed",
+    color: "#4a4a4a",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: 300,
+    alignSelf: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 30
+  },
+  selectMonth_Line: {
+    width: "100%",
+    height: 1,
+    borderTopColor: "#4a4a4a",
+    borderTopWidth: 1
+  },
+  selectMonth_Text: {
+    padding: 15,
+    width: "33.3%",
+    alignItems: "center"
   }
 })
 
