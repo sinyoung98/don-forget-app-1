@@ -16,6 +16,7 @@ import FindPwTwo from "./component/FindPwTwo"
 import FindPwThree from "./component/FindPwThree"
 import { Route } from 'react-router-dom';
 import { Ionicons } from '@expo/vector-icons';
+import Schedule from './component/Schedule';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -34,6 +35,7 @@ function Tabs({ navigation, route }) {
     navigation.setOptions({ headerTitle: getHeaderTitle(route) });
   }, [navigation, route]);
 
+  const { userId } = route.params;
   return (
     <BottomTab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -60,7 +62,9 @@ function Tabs({ navigation, route }) {
         inactiveTintColor: 'gray',
       }}>
       <BottomTab.Screen name="Home" component={Home} />
-      <BottomTab.Screen name="Schedule" component={Schdule} />
+      <BottomTab.Screen name="Schedule">
+        {(props) => <Schedule {...props} id={userId} />}
+      </BottomTab.Screen>
       <BottomTab.Screen name="Search" component={Search} />
       <BottomTab.Screen name="Mypage" component={Mypage} />
     </BottomTab.Navigator>
@@ -89,7 +93,7 @@ export default function App() {
             headerTitle: getHeaderTitle(route),
             headerStyle: {
               backgroundColor: 'blue',
-              opacity : 0.8,
+              opacity: 0.8,
             },
             headerTitleStyle: {
               color: 'white'

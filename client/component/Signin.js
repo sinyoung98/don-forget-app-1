@@ -22,7 +22,7 @@ function Signin({ navigation }) {
         console.log("password:", password);
         AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(response));
         alert(`${response.name}님이 로그인되셨습니다`);
-        navigation.replace(`Tabs`, {name : "Home"})
+        navigation.replace(`Tabs`, {userId : response.id})
       })
       .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
         console.log("AsyncStorage:", result);
