@@ -14,13 +14,52 @@ import Signup from "./component/Signup"
 import FindPW from "./component/FindPW"
 import FindPwTwo from "./component/FindPwTwo"
 import FindPwThree from "./component/FindPwThree"
+import { Route } from 'react-router-dom';
+import { Ionicons } from '@expo/vector-icons';
 
 const BottomTab = createBottomTabNavigator();
 
-function Tabs() {
+
+
+function getHeaderTitle(route) {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name // 현재 active된 route name을 tab navigator에서 가져온다
+    : route.params?.screen || 'Home';
+
+  return routeName;
+}
+
+function Tabs({ navigation, route }) {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+  }, [navigation, route]);
+
   return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen name="Home" component={Home}/>
+    <BottomTab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = focused
+            ? 'ios-home'
+            : 'ios-home';
+        } else if (route.name === 'Schedule') {
+          iconName = focused ? 'ios-list-box' : 'ios-list';
+        } else if (route.name === 'Search') {
+          iconName = 'ios-search'
+        } else if (route.name === 'Mypage') {
+          iconName = "ios-contact"
+        }
+
+        // You can return any component that you like here!
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+    })}
+      tabBarOptions={{
+        activeTintColor: '#211ebf',
+        inactiveTintColor: 'gray',
+      }}>
+      <BottomTab.Screen name="Home" component={Home} />
       <BottomTab.Screen name="Schedule" component={Schdule} />
       <BottomTab.Screen name="Search" component={Search} />
       <BottomTab.Screen name="Mypage" component={Mypage} />
@@ -30,6 +69,7 @@ function Tabs() {
 
 const Stack = createStackNavigator();
 
+
 export default function App() {
   const [isLoading, setLoading] = useState(true);
 
@@ -37,13 +77,24 @@ export default function App() {
     setTimeout(() => { setLoading(false) }, 3000)
   }, [])
 
+
+
   return (
     <>
       {isLoading ? <Intro /> : <NavigationContainer>
         <Stack.Navigator initialRouteName="Signin">
           <Stack.Screen name="intro" component={Intro} style={styles.stackNavigation} options={{ title: 'Welcome' }} />
           <Stack.Screen name="Signin" component={Signin} options={{ title: '로그인' }} />
-          <Stack.Screen name="Tabs" component={Tabs}  options={{ title: 'Home' }} />
+          <Stack.Screen name="Tabs" component={Tabs} options={({ route }) => ({ // point!!!!!!
+            headerTitle: getHeaderTitle(route),
+            headerStyle: {
+              backgroundColor: 'blue',
+              opacity : 0.8,
+            },
+            headerTitleStyle: {
+              color: 'white'
+            }
+          })} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }} />
           <Stack.Screen name="FindPW" component={FindPW} options={{ title: '비밀번호 찾기' }} />
           <Stack.Screen name="FindPwTwo" component={FindPwTwo} options={{ title: '비밀번호 찾기' }} />
