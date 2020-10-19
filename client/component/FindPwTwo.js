@@ -6,8 +6,10 @@ import {StackActions} from "@react-navigation/native";
 
 
 export default function FindPwTwo({route, navigation}){
+
    const {question, answer, id} = route.params
    const [userAnswer, setUseranswer] = useState("")
+   console.log(question, answer);
 
    const createEmailAlert = () =>
     Alert.alert(

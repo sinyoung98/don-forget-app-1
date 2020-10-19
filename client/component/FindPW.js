@@ -9,30 +9,20 @@ export default function FindPW({navigation}) {
 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
-    const [question, setQuestion] = useState("");
-    const [answer, setAnswer] = useState("");
-    const [id, getUserid] = useState("");
 
     function handleStepOne() {
-        // console.log("wow");
-        // console.log(email, name);
-        // axios.post('https://don-forget-server.com/user/findpassword/stepone', {
-        //     name: name,
-        //     email: email
-        // })
-        //     .then((response) => response.data)
-        //     .then((data) => {
-        //         console.log(data);
-        //         setQuestion(data.password_question);
-        //         setAnswer(data.password_answer);
-        //         getUserid(data.id)
-        //         console.log(question, answer, id);
-        //     })
-        //     .catch((err) => console.log(err))
-
-    navigation.dispatch(
-        StackActions.replace(`FindPwTwo`, {question : "가장 기억에 남는 선생님 성함은?", answer : "sinyoung", id : "14"})
-    );
+        axios.post('https://don-forget-server.com/user/findpassword/stepone', {
+            name: name,
+            email: email
+        })
+            .then((response) => response.data)
+            .then((data) => {
+                console.log(data.password_question);
+                navigation.dispatch(
+                    StackActions.replace(`FindPwTwo`, {question : data.password_question, answer : data.password_answer, id : id})
+                );
+            })
+            .catch((err) => console.log(err))
     }
     return (
         <View style={styles.container}>
