@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { AsyncStorage, View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from "react-native"
 import moment, { Moment as MomentTypes } from 'moment';
 import axios from "axios"
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Home() {
 
@@ -17,6 +18,11 @@ export default function Home() {
   const [month, setMonth] = useState(selectedDate._locale._months[selectedDate.month()]);
   // 하단 일정 창 오픈
   const [openSchedule, setOpenSchedule] = useState(false);
+  
+
+  //nextMonth
+  const [nextMonth, setNext] = useState([]);
+  const [isOpenNextMonth, setOpenNextMonth] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,10 +34,23 @@ export default function Home() {
           console.log("result:", JSON.parse(result));
           let parse = JSON.parse(result);
           getSchedule(parse.id);
+          getNextInfo(parse.id);
         })
     }
     fetchData();
   }, [])
+
+
+  const getNextInfo = (id) => {
+    axios.get(`https://don-forget-server.com/schedule/expectNextCost/${id}`)
+    .then((res) => res.data)
+    .then((data) => {
+      console.log(data)
+      setNext(data)
+      console.log(nextMonth)
+    })
+    .catch((err)=> console.log("err!"))
+  }
 
   const getSchedule = (id) => {
     axios.get(`https://don-forget-server.com/schedule/${id}`)
@@ -184,7 +203,16 @@ export default function Home() {
             setSelectedDate(moment().month(num).date(1))
           }}><Text>&gt;</Text></TouchableOpacity>
       </View>
-
+      
+      <View style={isOpenNextMonth ? expect.content : styles.none}>
+      <Ionicons name="ios-checkmark-circle-outline" size={20} color="#3b22a9" style={expect.icon}/>
+        <Text style= {expect.text}> 다음달 {nextMonth[0]}개의 이벤트가 있어요!</Text>
+        <Text style={expect.textTwo}> 지출 예상 금액 : {nextMonth[1]} 원</Text>
+        <Text style={expect.textTwo}> 지출 예상 선물 : {nextMonth[2]} 개</Text>
+        <TouchableOpacity style={expect.close} onPress={() => setOpenNextMonth(false)}>
+          <Text>✕</Text>
+        </TouchableOpacity>
+        </View>
       {/* 월 선택 모달 */}
       <View style={openSelectMonth ? styles.selectMonth : styles.none}>
         {monthModal()}
@@ -234,6 +262,31 @@ export default function Home() {
 
   </ScrollView>)
 }
+
+const expect = StyleSheet.create({
+  content : {
+    backgroundColor : "#d3c9ff",
+    position : "relative",
+    paddingLeft : 10,
+    width : "100%",
+    height : "17%",
+    marginBottom : 10
+  },
+  text : {
+    fontWeight : "700",
+    color : "#3b22a9",
+    paddingLeft : 20
+  },
+  icon : {
+    position : "relative",
+    top : "20%"
+  },
+  close : {
+    position : "absolute",
+    right : "10%",
+    top : "20%"
+  }
+})
 
 const styles = StyleSheet.create({
   none: {
