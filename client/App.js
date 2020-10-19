@@ -14,6 +14,7 @@ import Signup from "./component/Signup"
 import FindPW from "./component/FindPW"
 import FindPwTwo from "./component/FindPwTwo"
 import FindPwThree from "./component/FindPwThree"
+import ChangePW from "./component/Mypage_ChangePw"
 import { Route } from 'react-router-dom';
 import { Ionicons } from '@expo/vector-icons';
 import Schedule from './component/Schedule';
@@ -28,6 +29,17 @@ function getHeaderTitle(route) {
     : route.params?.screen || 'Home';
 
   return routeName;
+}
+
+const MypageTab = createStackNavigator();
+
+function MypageTabScreen() {
+  return (
+    <MypageTab.Navigator>
+      <MypageTab.Screen name="Mypage" component={Mypage} />
+      <MypageTab.Screen name="ChangePW" component={ChangePW} options={{ title: '비밀번호 변경' }} />
+    </MypageTab.Navigator>
+  )
 }
 
 function Tabs({ navigation, route }) {
@@ -65,10 +77,11 @@ function Tabs({ navigation, route }) {
       <BottomTab.Screen name="Schedule">
         {(props) => <Schedule {...props} id={userId} />}
       </BottomTab.Screen>
+
       <BottomTab.Screen name="Search">
       {(props) => <Search {...props} id={userId} />}
       </BottomTab.Screen>
-      <BottomTab.Screen name="Mypage" component={Mypage} />
+      <BottomTab.Screen name="Mypage" component={MypageTabScreen} />
     </BottomTab.Navigator>
   );
 }
