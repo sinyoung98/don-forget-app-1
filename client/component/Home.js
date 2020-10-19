@@ -106,10 +106,14 @@ export default function Home() {
 
   const monthModal = () => {
     return (<>
-      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => setYear(year - 1)}><Text>&lt;</Text></TouchableOpacity>
-      <View style={styles.selectMonth_Text}><Text>{year}</Text></View>
-      <TouchableOpacity style={styles.selectMonth_Text} onPress={() => setYear(year + 1)}><Text>&gt;</Text></TouchableOpacity>
+      <View style={{ padding: 15, width: "15%", alignItems: "center" }}></View>
+      <TouchableOpacity style={{ padding: 15, width: "15%", alignItems: "center" }} onPress={() => setYear(year - 1)}><Text>&lt;</Text></TouchableOpacity>
+      <View style={{ padding: 15, width: "40%", alignItems: "center" }}><Text>{year}</Text></View>
+      <TouchableOpacity style={{ padding: 15, width: "15%", alignItems: "center" }} onPress={() => setYear(year + 1)}><Text>&gt;</Text></TouchableOpacity>
+      <TouchableOpacity style={{ width: "15%", alignItems: "flex-end" }} onPress={() => setOpenSelectMonth(!openSelectMonth)}><Text>✕</Text></TouchableOpacity>
+
       <View style={styles.selectMonth_Line}></View>
+
       <TouchableOpacity style={styles.selectMonth_Text} onPress={() => {
         setSelectedDate(moment().year(year).month(0).date(1));
         setOpenSelectMonth(!openSelectMonth);
@@ -445,9 +449,8 @@ const styles = StyleSheet.create({
   },
   selectMonth_Line: {
     width: "100%",
-    height: 1,
     borderTopColor: "#4a4a4a",
-    borderTopWidth: 1
+    borderTopWidth: 1,
   },
   selectMonth_Text: {
     padding: 15,
