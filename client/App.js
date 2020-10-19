@@ -65,7 +65,9 @@ function Tabs({ navigation, route }) {
       <BottomTab.Screen name="Schedule">
         {(props) => <Schedule {...props} id={userId} />}
       </BottomTab.Screen>
-      <BottomTab.Screen name="Search" component={Search} />
+      <BottomTab.Screen name="Search">
+      {(props) => <Search {...props} id={userId} />}
+      </BottomTab.Screen>
       <BottomTab.Screen name="Mypage" component={Mypage} />
     </BottomTab.Navigator>
   );
