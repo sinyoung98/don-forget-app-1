@@ -10,7 +10,6 @@ export default function Mypage({ navigation }) {
   const [openName, setOpenName] = useState(false);
   const [changeName, setChangeName] = useState("");
 
-
   useEffect(() => {
     async function fetchData() {
       // 로그인 유저 데이터 받아오기
@@ -30,12 +29,11 @@ export default function Mypage({ navigation }) {
   }
 
   const changeNameHandler = () => {
-    console.log(changeName);
     axios.post(`https://don-forget-server.com/user/changename/${userData.id}`, {
       name: changeName
     })
       .then((res) => {
-        let data = res.data; //{name: newname}
+        let data = res.data;
         let newData = userData;
         newData.name = data.name;
 
@@ -47,22 +45,31 @@ export default function Mypage({ navigation }) {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: "#fff", height: Dimensions.get('window').height }}>
+    <View style={{ backgroundColor: "#fff", height: Dimensions.get('window').height, flexDirection: "column" }}>
       <Text style={styles.title}>Mypage</Text>
       {userData !== null ?
         <View style={styles.userInfo}>
-          <Text>User Info:</Text>
-          {openName ? <>
+          {openName ? <View style={{ flexDirection: "row" }}>
             <TextInput placeholder="변경할 이름을 입력해주세요." autoCapitalize="none"
-              onChangeText={text => setChangeName(text)}></TextInput>
-            <TouchableOpacity onPress={changeNameHandler}><Text>✔︎</Text></TouchableOpacity>
-          </> : <Text>{userData.name}</Text>}
-          <Text>{userData.email}</Text>
+              style={styles.input} onChangeText={text => setChangeName(text)} />
+            <TouchableOpacity onPress={changeNameHandler}>
+              <Text style={{ padding: 15 }}>✔︎</Text>
+            </TouchableOpacity>
+          </View> : <Text style={styles.name}>{userData.name}</Text>}
+          <Text style={{ color: "#4a4a4a" }}>{userData.email}</Text>
         </View> : <></>}
-
-      <TouchableOpacity onPress={() => setOpenName(!openName)}><Text>이름 변경</Text></TouchableOpacity>
-      <TouchableOpacity onPress={signoutHandler}><Text>로그아웃</Text></TouchableOpacity>
-    </ScrollView>
+      <View style={{ backgroundColor: "whitesmoke", flexDirection: "row", justifyContent: "space-between", marginTop: "auto", marginBottom: 160, paddingHorizontal: 40 }}>
+        <TouchableOpacity style={styles.button} onPress={() => setOpenName(!openName)}>
+          <Text style={styles.button_text}>이름 변경</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate("ChangePW") }}>
+          <Text style={styles.button_text}>비밀번호 변경</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={signoutHandler}>
+          <Text style={styles.button_text}>로그아웃</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
@@ -80,7 +87,30 @@ const styles = StyleSheet.create({
   userInfo: {
     backgroundColor: "whitesmoke",
     borderRadius: 10,
-    padding: 20,
+    padding: 30,
     margin: 15,
-  }
+  },
+  name: {
+    color: "#4a4a4a",
+    fontSize: 25,
+    fontWeight: "700",
+  },
+  input: {
+    width: 200,
+    borderColor: '#c5c5c5',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 3
+  },
+  button: {
+    borderRadius: 5,
+    backgroundColor: "whitesmoke",
+    margin: 5,
+    padding: 4
+  },
+  button_text: {
+    padding: 10,
+    color: "#4a4a4a",
+  },
 })
