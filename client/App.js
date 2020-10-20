@@ -15,7 +15,6 @@ import FindPW from "./component/FindPW"
 import FindPwTwo from "./component/FindPwTwo"
 import FindPwThree from "./component/FindPwThree"
 import ChangePW from "./component/Mypage_ChangePw"
-import { Route } from 'react-router-dom';
 import { Ionicons } from '@expo/vector-icons';
 import Schedule from './component/Schedule';
 
@@ -70,7 +69,7 @@ function Tabs({ navigation, route }) {
       },
     })}
       tabBarOptions={{
-        activeTintColor: '#211ebf',
+        activeTintColor: '#3b23a6',
         inactiveTintColor: 'gray',
       }}>
       <BottomTab.Screen name="Home" component={Home} />

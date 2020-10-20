@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AsyncStorage, Dimensions, View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native"
 import axios from "axios";
+import Chart from './Mypage_Chart';
 import { StackActions } from "@react-navigation/native"
 
 export default function Mypage({ navigation }) {
@@ -50,7 +51,9 @@ export default function Mypage({ navigation }) {
   return (
     <View style={{ backgroundColor: "#fff", height: Dimensions.get('window').height, flexDirection: "column" }}>
       <Text style={styles.title}>Mypage</Text>
-      {userData !== null ?
+      {userData !== null ? <>
+        <Chart id={userData.id} />
+
         <View style={styles.userInfo}>
           {openName ? <View style={{ flexDirection: "row" }}>
             <TextInput placeholder="변경할 이름을 입력해주세요." autoCapitalize="none"
@@ -60,7 +63,9 @@ export default function Mypage({ navigation }) {
             </TouchableOpacity>
           </View> : <Text style={styles.name}>{userData.name}</Text>}
           <Text style={{ color: "#4a4a4a" }}>{userData.email}</Text>
-        </View> : <></>}
+        </View>
+      </> : <></>}
+
       <View style={{ backgroundColor: "whitesmoke", flexDirection: "row", justifyContent: "space-between", marginTop: "auto", marginBottom: 160, paddingHorizontal: 40 }}>
         <TouchableOpacity style={styles.button} onPress={() => setOpenName(!openName)}>
           <Text style={styles.button_text}>이름 변경</Text>
@@ -82,7 +87,7 @@ const styles = StyleSheet.create({
   },
   title: {
     margin: 20,
-    marginBottom: 0,
+    marginBottom: 10,
     fontSize: 30,
     fontWeight: "700",
     color: "#4a4a4a",
