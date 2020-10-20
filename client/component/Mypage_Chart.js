@@ -19,7 +19,7 @@ function Chart(props) {
           for (let i = 0; i < 12; i++) {
             if (Number(month) - 1 === i) {
               money[i] = Year_Data[month].money / 10000;
-              gift[i] = Year_Data[month].gift * 10;
+              gift[i] = Year_Data[month].gift * 5;
             }
           }
         }
@@ -96,6 +96,7 @@ function Chart(props) {
           margin: 8,
           borderRadius: 8,
         }}
+        bezier
       />
     </View>
   )
