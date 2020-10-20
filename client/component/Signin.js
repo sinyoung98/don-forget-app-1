@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
@@ -8,6 +8,23 @@ function Signin({ navigation }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  
+  useEffect(() => {
+    async function checkUser() {
+      await AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
+        let user = JSON.parse(result);
+        return user;
+      })
+      .then((result) => {
+        if (result) {
+          console.log(result);
+          navigation.replace("Tabs" , {userId : result.id});
+        } 
+      })
+    }
+    checkUser();
+  }, [])
 
   function handleLoginBtn() {
     axios.post('https://don-forget-server.com/user/signin', {
