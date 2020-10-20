@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     display: "none"
   },
   title: {
-    margin: 20,
+    margin: 25,
     marginBottom: 10,
     fontSize: 30,
     fontWeight: "700",
