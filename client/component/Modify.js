@@ -6,7 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { StackActions } from "@react-navigation/native";
 import axios from "axios";
 
-export default function Modify({ navigation, route, userId, setUpdate }) {
+export default function Modify({ navigation, route, userId, setUpdate, setSearch }) {
 
     console.log(userId);
     const { date, event_target, gift, giveandtake, id, type } = route.params.data;
@@ -56,8 +56,14 @@ export default function Modify({ navigation, route, userId, setUpdate }) {
                 .then((res) => res.data)
                 .then((data) => {
                     console.log(data);
-                    setUpdate(true);
-                    navigation.dispatch(StackActions.popToTop());
+                    if (setUpdate) {
+                        setUpdate(true);
+                        navigation.navigate("GetSchedule");
+                    }
+                    else {
+                        setSearch(true);
+                        navigation.navigate("SearchData");
+                    }
                 })
                 .catch((err) => console.log("err!!!"))
 
@@ -105,60 +111,60 @@ export default function Modify({ navigation, route, userId, setUpdate }) {
                 value={eventTarget}
                 placeholderTextColor="grey"
             />
-             <TouchableOpacity activeOpacity={0.8} style={styles.select}>
-        <RNPickerSelect
-          placeholder={{
-            label: eventType,
-            value: eventType,
-          }}
-          placeholderTextColor="black"
-          onValueChange={(value) => setType(value)}
-          items={[
-            { label: '생일', value: '생일', key: 1 },
-            { label: '결혼식', value: '결혼식', key: 2 },
-            { label: '장례식', value: '장례식', key: 3 },
-            { label: '집들이', value: '집들이', key: 3 },
-            { label: '취직', value: '취직', key: 3 },
-            { label: '입학', value: '입학', key: 3 },
-            { label: '출산', value: '출산', key: 3 },
-            { label: '돌잔치', value: '돌잔치', key: 3 },
-            { label: '기념일', value: '기념일', key: 3 },
-            { label: '기타', value: '기타', key: 3 },
-          ]}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} style={styles.selectType}>
-        <RNPickerSelect
-          placeholder={{
-            label: giftType,
-            value: giftType,
-          }}
-          placeholderTextColor="black"
-          onValueChange={(value) => setGiftType(value)}
-          items={[
-            { label: '현금', value: '현금', key: 1 },
-            { label: '선물', value: '선물', key: 2 },
-          ]}
-        />
-      </TouchableOpacity>
-      <TextInput
-        style={content ? styles.inputfocus : styles.input}
-        onChangeText={text => setContent(text)}
-        placeholder="주거나 받은 내역 *"
-        autoCapitalize="none"
-        value={content}
-        placeholderTextColor="grey"
-      />
-       <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={() => {
-        navigation.dispatch(
-          StackActions.popToTop()
-        );
-      }}>
-        <Text style={styles.buttonText}>취소</Text>
-      </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleModifySchedule}>
-        <Text style={styles.buttonText}>수정하기</Text>
-      </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.8} style={styles.select}>
+                <RNPickerSelect
+                    placeholder={{
+                        label: eventType,
+                        value: eventType,
+                    }}
+                    placeholderTextColor="black"
+                    onValueChange={(value) => setType(value)}
+                    items={[
+                        { label: '생일', value: '생일', key: 1 },
+                        { label: '결혼식', value: '결혼식', key: 2 },
+                        { label: '장례식', value: '장례식', key: 3 },
+                        { label: '집들이', value: '집들이', key: 3 },
+                        { label: '취직', value: '취직', key: 3 },
+                        { label: '입학', value: '입학', key: 3 },
+                        { label: '출산', value: '출산', key: 3 },
+                        { label: '돌잔치', value: '돌잔치', key: 3 },
+                        { label: '기념일', value: '기념일', key: 3 },
+                        { label: '기타', value: '기타', key: 3 },
+                    ]}
+                />
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.8} style={styles.selectType}>
+                <RNPickerSelect
+                    placeholder={{
+                        label: giftType,
+                        value: giftType,
+                    }}
+                    placeholderTextColor="black"
+                    onValueChange={(value) => setGiftType(value)}
+                    items={[
+                        { label: '현금', value: '현금', key: 1 },
+                        { label: '선물', value: '선물', key: 2 },
+                    ]}
+                />
+            </TouchableOpacity>
+            <TextInput
+                style={content ? styles.inputfocus : styles.input}
+                onChangeText={text => setContent(text)}
+                placeholder="주거나 받은 내역 *"
+                autoCapitalize="none"
+                value={content}
+                placeholderTextColor="grey"
+            />
+            <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={() => {
+                navigation.dispatch(
+                    StackActions.popToTop()
+                );
+            }}>
+                <Text style={styles.buttonText}>취소</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleModifySchedule}>
+                <Text style={styles.buttonText}>수정하기</Text>
+            </TouchableOpacity>
         </View>
     )
 }

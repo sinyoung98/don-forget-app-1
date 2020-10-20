@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AsyncStorage, Dimensions, View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native"
 import axios from "axios";
 import Chart from './Mypage_Chart';
+import { StackActions } from "@react-navigation/native"
 
 export default function Mypage({ navigation }) {
 
@@ -25,7 +26,9 @@ export default function Mypage({ navigation }) {
   const signoutHandler = () => {
     axios.post('https://don-forget-server.com/user/signout', {})
       .then(() => { AsyncStorage.clear() })
-      .then(() => navigation.navigate("Signin"))
+      .then(() => {
+        navigation.replace("Signin");
+      })
       .catch((err) => console.log(err));
   }
 
