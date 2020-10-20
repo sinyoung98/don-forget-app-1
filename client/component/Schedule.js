@@ -1,18 +1,55 @@
-import React, { useEffect, useState } from "react"
-import { View, Button, Text, StyleSheet, FlatList, Alert } from "react-native"
+import React, { useEffect, useState } from "react";
+import { View, Button, Text, StyleSheet, FlatList, Alert, Image, Linking } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import axios from "axios";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from '@expo/vector-icons';
-import ScheduleAdd from "./ScheduleAdd"
-import Modify from "./Modify"
+import ScheduleAdd from "./ScheduleAdd";
+import Modify from "./Modify";
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/Feather';
 
 
 function GetSchedule({ id, navigation, update, setUpdate }) {
   const [data, setData] = useState([]);
   const [curData, setCurData] = useState("");
 
+  const otherBanks = () =>
+    Alert.alert(
+      "은행 선택",
+      "",
+      [
+        {
+          text: "우리은행",
+          onPress: () => Linking.openURL("SmartBank2WIB://"),
+        },
+        {
+          text: "신한은행", 
+          onPress: () => Linking.openURL("sbankmoasign://")
+        },
+        {
+          text: "국민은행", 
+          onPress: () => Linking.openURL("kbStarbank://")
+        },
+        {
+          text: "농협은행", 
+          onPress: () => Linking.openURL("newsmartbanking://")
+        },
+        {
+          text: "기업은행", 
+          onPress: () => Linking.openURL("ibksmartbanking://")
+        },
+        {
+          text: "취소",
+          onPress: () => console.log("cancel"),
+          style: "cancel"
+        },
+        
+      ],
+    );
+  
   const createAlert = (item) =>
     Alert.alert(
       "추가 및 삭제",
@@ -105,7 +142,20 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
             </TouchableOpacity>
           </>)}
       />
+      <ActionButton buttonColor="#3b23a6" renderIcon={active => active ? (<Icon name="plus" style={styles.actionButtonIcon} /> ) : (<Icon name="won" style={styles.actionButtonIcon} />)}>
+          <ActionButton.Item buttonColor='rgb(254, 228, 9)' title="카카오뱅크" onPress={() => Linking.openURL("kakaobank://")}>
+            <Image style={styles.kakao} source={require('../../client/kakaobank_app.png')}/>
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='rgb(246, 246, 246)' title="토스" onPress={() => Linking.openURL("supertoss://")}>
+            <Image style={styles.toss} source={require('../../client/toss_app.png')}/>
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#1abc9c' title="기타 은행" onPress={() => {otherBanks();}}>
+            <Icon style={styles.others} name="ellipsis-h" />
+          </ActionButton.Item>
+
+        </ActionButton>
     </View>
+    
   )
 }
 
@@ -246,5 +296,21 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop : 3,
     fontWeight: "300",
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+  kakao: {
+    height: 40,
+    width: 40
+  },
+  toss: {
+    height: 50,
+    width: 50
+  },
+  others: {
+    fontSize: 25
   }
 })
