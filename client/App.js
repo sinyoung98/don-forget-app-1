@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from "react";
-import { Button, Text, View, StyleSheet } from 'react-native';
+import { Button, Text, View, StyleSheet, AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -45,8 +45,24 @@ function Tabs({ navigation, route }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({ headerTitle: getHeaderTitle(route) });
   }, [navigation, route]);
+  
+  const [userId, setUserId] = useState("");
+  
+  useEffect(() => {
+    async function getId(){
+      await AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
+        return result;
+      })
+      .then((result) => {
+        console.log(result);
+        let parse = JSON.parse(result);
+        setUserId(parse.id);
+      })
+    }
+    getId();
+  }, [])
 
-  const { userId } = route.params;
+
   return (
     <BottomTab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
