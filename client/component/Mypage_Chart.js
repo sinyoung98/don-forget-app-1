@@ -45,9 +45,16 @@ function Chart(props) {
         data={{
           labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
           datasets: [
-            { data: money },
-            { data: [0, 200000, 30000, 0, 0, 0, 0, 30000, 100000, 200000, 0, 0] }
-          ]
+            {
+              data: money,
+              color: () => `green`,
+            },
+            {
+              data: [0, 2, 3, 0, 0, 0, 0, 3, 1, 200000, 0, 0],
+              color: () => `blue`,
+            }
+          ],
+          legend: ["현금", "선물"]
         }}
         width={Dimensions.get("window").width}
         height={256}
