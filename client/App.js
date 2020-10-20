@@ -71,6 +71,9 @@ function Tabs({ navigation, route }) {
       tabBarOptions={{
         activeTintColor: '#3b23a6',
         inactiveTintColor: 'gray',
+        style: {
+          backgroundColor : "white",//color you want to change
+        }
       }}>
       <BottomTab.Screen name="Home" component={Home} />
       <BottomTab.Screen name="Schedule">
@@ -106,11 +109,12 @@ export default function App() {
           <Stack.Screen name="Tabs" component={Tabs} options={({ route }) => ({ // point!!!!!!
             headerTitle: getHeaderTitle(route),
             headerStyle: {
-              backgroundColor: 'blue',
               opacity: 0.8,
+              backgroundColor : "#1702ff"
             },
             headerTitleStyle: {
-              color: 'white'
+              color: 'white',
+              fontWeight : "800"
             }
           })} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }} />

@@ -29,7 +29,7 @@ export default function FindPwTwo({route, navigation}){
    function handleStepTwo(){
        if (userAnswer===answer){
         navigation.dispatch(
-            StackActions.replace(`FindPwThree`, { id : "14"})
+            StackActions.replace(`FindPwThree`, { id : id})
         );
        }else {
         createEmailAlert();
@@ -47,6 +47,7 @@ export default function FindPwTwo({route, navigation}){
                 placeholder="질문에 알맞는 응답을 입력해주세요"
                 autoCapitalize="none"
                 value={userAnswer}
+                
             />
             <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleStepTwo}>
                 <Text style={styles.buttonText}>Next</Text>

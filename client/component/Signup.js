@@ -31,30 +31,63 @@ export default function Signup({ navigation }) {
 
 
   const createPWAlert = () =>
-  Alert.alert(
-    "⚠️ Error",
-    "비밀번호가 일치하지 않습니다",
-    [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel"
-      },
-      { text: "OK", onPress: () => console.log("OK Pressed") }
-    ],
-    { cancelable: false }
-  );
+    Alert.alert(
+      "⚠️ Error",
+      "비밀번호가 일치하지 않습니다",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
+  const createSignupErr = () =>
+    Alert.alert(
+      "⚠️ Error",
+      "입력되지 않은 곳이 있습니다",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
+    const conflict = () =>
+    Alert.alert(
+      "⚠️ 이미 가입된 이메일 주소입니다",
+      `다른 이메일 주소를 입력해주세요`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
 
   function handleSignupBtn() {
     console.log(inputEmail, inputPW, inputName, passwordHint, hintAnswer)
-    if (!validate(inputEmail)){
+    if (!validate(inputEmail)) {
       createEmailAlert();
     }
-    else if ((inputPW !== inputPWCheck) || inputPW === ""){
+    else if ((inputPW !== inputPWCheck) || inputPW === "") {
       console.log(inputPWCheck);
       createPWAlert();
-    } 
-    else{
+    }
+    else if (!(inputEmail && inputPW && inputName && passwordHint && hintAnswer)) {
+      createSignupErr();
+    }
+    else {
       axios.post("https://don-forget-server.com/user/signup", {
         email: inputEmail,
         password: inputPW,
@@ -66,11 +99,11 @@ export default function Signup({ navigation }) {
       })
         .then((res) => console.log(res.data))
         .then(() => navigation.navigate("Signin"))
-        .catch((err) => console.log(err))
+        .catch((err) => conflict())
     }
-}
+  }
 
-  function validate(text){
+  function validate(text) {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (reg.test(text) === false) {
       return false;
@@ -104,6 +137,7 @@ export default function Signup({ navigation }) {
         placeholder="Password *"
         autoCapitalize="none"
         value={inputPW}
+        secureTextEntry={true}
       />
       <TextInput
         style={inputPWCheck ? styles.inputfocus : styles.input}
@@ -111,6 +145,7 @@ export default function Signup({ navigation }) {
         placeholder="PasswordCheck *"
         autoCapitalize="none"
         value={inputPWCheck}
+        secureTextEntry={true}
       />
       <TouchableOpacity activeOpacity={0.8} style={styles.select}>
         <RNPickerSelect
@@ -119,7 +154,10 @@ export default function Signup({ navigation }) {
             label: 'Password Hint *',
             value: null,
           }}
-          onValueChange={(value) => setHint(value)}
+          onValueChange={(value) => {
+            console.log(value);
+            setHint(value)
+          }}
           items={[
             { label: '가장 기억에 남는 선생님 성함은?', value: 1, key: 1 },
             { label: '내가 존경하는 인물은?', value: 2, key: 2 },

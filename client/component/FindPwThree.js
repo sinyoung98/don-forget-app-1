@@ -33,6 +33,7 @@ export default function FindPwThree({ navigation, route }) {
             })
                 .then((res) => console.log(res.data))
                 .then(() => {
+                    console.log(password, id);
                     navigation.dispatch(StackActions.popToTop());
                     navigation.dispatch(
                         StackActions.replace(`Signin`)
@@ -54,6 +55,7 @@ export default function FindPwThree({ navigation, route }) {
                 placeholder="New password *"
                 autoCapitalize="none"
                 value={password}
+                secureTextEntry={true}
             />
             <TextInput
                 style={pwCheck ? styles.inputfocus : styles.input}
@@ -61,6 +63,7 @@ export default function FindPwThree({ navigation, route }) {
                 placeholder="New password Check*"
                 autoCapitalize="none"
                 value={pwCheck}
+                secureTextEntry={true}
             />
             <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleStepThree}>
                 <Text style={styles.buttonText}>비밀번호 재설정하기</Text>

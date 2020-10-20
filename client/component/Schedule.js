@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ScheduleAdd from "./ScheduleAdd"
 import Modify from "./Modify"
 
+
 function GetSchedule({ id, navigation, update, setUpdate }) {
   const [data, setData] = useState([]);
   const [curData, setCurData] = useState("");
@@ -36,25 +37,25 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
       ],
       { cancelable: false }
     );
-   
 
-  function handleRemove(item){
+
+  function handleRemove(item) {
     console.log(item)
-    axios.delete(`https://don-forget-server.com/schedule/${id}`,{
-      params : {
-        schedule_id : item
+    axios.delete(`https://don-forget-server.com/schedule/${id}`, {
+      params: {
+        schedule_id: item
       }
     })
-    .then((res) => res.data)
-    .then(() => {
-      console.log(data);
-      setUpdate(true);
-    })
+      .then((res) => res.data)
+      .then(() => {
+        console.log(data);
+        setUpdate(true);
+      })
   }
 
   function handleModify(item) {
     console.log(item);
-    navigation.navigate("Modify", { data: item})
+    navigation.navigate("Modify", { data: item })
   }
 
   function getSchedule() {
@@ -85,19 +86,20 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
       <TouchableOpacity style={styles.icon} onPress={() => {
         navigation.navigate("ScheduleAdd")
       }}>
-        <Ionicons name="ios-add-circle-outline" size={40} />
+        <Text style={styles.addText}>Add Schedule + </Text>
       </TouchableOpacity>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <>
-            <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)}</Text>
             <TouchableOpacity style={styles.list} onPress={() => {
               createAlert(item);
             }}>
+                <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)} </Text>
               <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
-              <Text style={styles.text}>{item.event_target} {item.type}</Text>
+              <Text style={styles.text}>{item.event_target}</Text>
+              <Text style={styles.textType}>{item.type}</Text>
               <Text style={styles.gift}>{item.gift.slice(0, 2) === "선물" ?
                 " " + item.gift.slice(3) : " ₩" + item.gift.slice(3)}</Text>
             </TouchableOpacity>
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   list: {
     position: "relative",
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
     elevation: 7,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: "8%"
+    padding: "8%",
   },
   생일: {
     fontSize: 20,
@@ -211,20 +213,38 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
   gift: {
-    position: "absolute",
-    left: "80%",
+    position: "relative",
+    left: "90%",
     top: "100%",
-    fontSize: 15,
+    fontSize: 18,
     color: "grey"
   },
   date: {
-    fontWeight: "700",
-    fontSize: 16,
+    fontWeight: "200",
+    fontSize: 20,
+    position: "relative",
+    top: "50%"
   },
   icon: {
-    fontSize: 10,
     position: "relative",
-    left: "80%",
-    top: "20%"
+    left : "25%",
+    backgroundColor : "#759aff",
+    padding : "4%",
+    borderRadius : 30,
+    // width : "100%",
+    // height : "35%",
+    width : "50%",
+    alignItems : "center"
+  },
+  addText : {
+    color : "white",
+    fontWeight : "800",
+  },
+  textType : {
+    position : "relative",
+    fontSize: 16,
+    paddingLeft: 10,
+    paddingTop : 3,
+    fontWeight: "300",
   }
 })
