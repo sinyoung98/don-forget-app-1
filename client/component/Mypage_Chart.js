@@ -1,84 +1,100 @@
-import { LineChart, BarChart, } from "react-native-chart-kit";
+import { LineChart, BarChart, DotContent } from "react-native-chart-kit";
 import { Dimensions, View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function Chart(props) {
 
   const { id } = props;
-  const [money, setMoney] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+  const [money, setMoney] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [gift, setGift] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
-  const data = [
-    { name: '1월', gift: 0, money: 0 },
-    { name: '2월', gift: 0, money: 0 },
-    { name: '3월', gift: 0, money: 0 },
-    { name: '4월', gift: 0, money: 0 },
-    { name: '5월', gift: 0, money: 0 },
-    { name: '6월', gift: 0, money: 0 },
-    { name: '7월', gift: 0, money: 0 },
-    { name: '8월', gift: 0, money: 0 },
-    { name: '9월', gift: 0, money: 0 },
-    { name: '10월', gift: 0, money: 0 },
-    { name: '11월', gift: 0, money: 0 },
-    { name: '12월', gift: 0, money: 0 },
-  ];
-
-  axios.get(`https://don-forget-server.com/schedule/statistics/${id}`)
-    .then((res) => {
-      const Year_Data = res.data;
-      console.log('Year_Data : ', Year_Data);
-      for (let month in Year_Data) {
-        console.log('month : ', month);
-        for (let i = 0; i < money.length; i++) {
-          if (Number(month) - 1 === i) {
-            money[i] = Year_Data[month].money;
+  useEffect(() => {
+    axios.get(`https://don-forget-server.com/schedule/statistics/${id}`)
+      .then((res) => {
+        const Year_Data = res.data;
+        console.log('Year_Data: ', Year_Data);
+        for (let month in Year_Data) {
+          console.log('month: ', month);
+          for (let i = 0; i < 12; i++) {
+            if (Number(month) - 1 === i) {
+              money[i] = Year_Data[month].money / 10000;
+              gift[i] = Year_Data[month].gift * 10;
+            }
           }
         }
-      }
-      console.log("money:", money)
-      setMoney(money)
-    })
+        console.log("money:", money, 'gift:', gift);
+        setMoney(money);
+        setGift(gift);
+      })
+  })
+
 
   return (
     <View>
       <LineChart
         data={{
-          labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+          labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
           datasets: [
             {
               data: money,
-              color: () => `green`,
+              color: () => `mediumseagreen`,
             },
             {
-              data: [0, 2, 3, 0, 0, 0, 0, 3, 1, 200000, 0, 0],
-              color: () => `blue`,
+              data: gift,
+              color: () => `mediumpurple`,
             }
           ],
           legend: ["현금", "선물"]
         }}
-        width={Dimensions.get("window").width}
+        width={Dimensions.get("window").width * 0.95}
         height={256}
-        yAxisLabel="₩"
+        withShadow={false}
+        withDots={true}
+        withScrollableDot={false} // 할까말까...
+        // yAxisLabel="₩"
+        yAxisSuffix="만원"
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
+          backgroundColor: '#fff000',
+          backgroundGradientFrom: '#ffffff',
+          backgroundGradientTo: '#fffffa',
           decimalPlaces: 0,
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16
+          linejoinType: "round",
+          scrollableDotFill: '#fff',
+          scrollableDotRadius: 4,
+          scrollableDotStrokeColor: 'tomato',
+          scrollableDotStrokeWidth: 3,
+          scrollableInfoViewStyle: {
+            justifyContent: 'center',
+            alignContent: 'center',
+            backgroundColor: 'grey',
+            yAxisSuffix: "만원",
+            borderRadius: 2,
+            marginTop: 25,
+            marginLeft: 25
           },
-          propsForDots: {
-            r: "4",
-            strokeWidth: "2",
-            stroke: "#ffa726"
+          scrollableInfoTextStyle: {
+            fontSize: 10,
+            color: '#C4C4C4',
+            marginHorizontal: 2,
+            flex: 1,
+            textAlign: 'center',
+          },
+          scrollableInfoSize: { width: 30, height: 30 },
+          scrollableInfoOffset: 15,
+          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          color: (opacity = 1) => `rgb(78, 135, 210, ${opacity})`,
+          style: {
+            borderRadius: 16,
+            borderLeftWidth: 50,
+            borderStyle: 'solid',
           }
-        }}
+        }
+        }
         style={{
           margin: 8,
-          borderRadius: 8
+          borderRadius: 8,
         }}
       />
     </View>
