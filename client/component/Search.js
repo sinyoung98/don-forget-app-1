@@ -89,12 +89,13 @@ function SearchData({ id, navigation, useEffectSearch, setSearch }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <>
-            <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)}</Text>
             <TouchableOpacity style={styles.list} onPress={() => {
               createAlert(item);
             }}>
+              <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)}</Text>
               <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
-              <Text style={styles.text}>{item.event_target} {item.type}</Text>
+              <Text style={styles.text}>{item.event_target}</Text>
+              <Text style={styles.textType}>{item.type}</Text>
               <Text style={styles.gift}>{item.gift.slice(0, 2) === "선물" ?
                 " " + item.gift.slice(3) : " ₩" + item.gift.slice(3)}</Text>
             </TouchableOpacity>
@@ -250,15 +251,17 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
   gift: {
-    position: "absolute",
-    left: "80%",
+    position: "relative",
+    left: "90%",
     top: "100%",
-    fontSize: 15,
+    fontSize: 18,
     color: "grey"
   },
   date: {
-    fontWeight: "700",
-    fontSize: 16,
+    fontWeight: "200",
+    fontSize: 20,
+    position: "relative",
+    top: "50%"
   },
   icon: {
     position: "absolute",
@@ -272,5 +275,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     marginTop: 30
+  },
+  textType : {
+    position : "relative",
+    fontSize: 16,
+    paddingLeft: 10,
+    paddingTop : 3,
+    fontWeight: "300",
   }
 })

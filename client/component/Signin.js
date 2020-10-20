@@ -64,6 +64,7 @@ function Signin({ navigation }) {
         placeholder="Password *"
         autoCapitalize="none"
         value={password}
+        secureTextEntry={true}
       />
 
       <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleLoginBtn}>

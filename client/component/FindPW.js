@@ -1,14 +1,30 @@
 
 import React, { useState } from "react"
-import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button,} from 'react-native';
+import { AsyncStorage, Alert, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button, } from 'react-native';
 import axios from "axios";
 import { withTheme } from "react-native-elements";
 import { StackActions } from "@react-navigation/native";
 
-export default function FindPW({navigation}) {
+export default function FindPW({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
+
+    const createError = () => {
+        Alert.alert(
+            "⚠️ Error",
+            "이메일 또는 이름이 일치하지 않습니다",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+        )
+    }
 
     function handleStepOne() {
         axios.post('https://don-forget-server.com/user/findpassword/stepone', {
@@ -17,9 +33,9 @@ export default function FindPW({navigation}) {
         })
             .then((response) => response.data)
             .then((data) => {
-                console.log(data.password_question);
+                console.log("response data ; ", data);
                 navigation.dispatch(
-                    StackActions.replace(`FindPwTwo`, {question : data.password_question, answer : data.password_answer, id : id})
+                    StackActions.replace(`FindPwTwo`, { question: data.password_question, answer: data.password_answer, id: data.id })
                 );
             })
             .catch((err) => console.log(err))
@@ -46,7 +62,7 @@ export default function FindPW({navigation}) {
                 <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
 
-            
+
         </View>
     )
 }
