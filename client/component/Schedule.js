@@ -152,7 +152,6 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
           <ActionButton.Item buttonColor='#1abc9c' title="기타 은행" onPress={() => {otherBanks();}}>
             <Icon style={styles.others} name="ellipsis-h" />
           </ActionButton.Item>
-
         </ActionButton>
     </View>
     

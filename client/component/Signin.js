@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react"
 import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
-import { StackActions } from "@react-navigation/native"
+import { StackActions } from "@react-navigation/native";
+import * as Google from 'expo-google-app-auth';
+import * as Expo from 'expo';
+import * as Facebook from 'expo-facebook';
 
 function Signin({ navigation }) {
 
@@ -47,6 +50,87 @@ function Signin({ navigation }) {
       .catch((err) => console.log(err));
   }
 
+  async function signInWithGoogleAsync() {
+    try {
+      const result = await Google.logInAsync({
+        iosClientId: '85751289442-933uucamhnf394m61n9vo38jmtrtgv69.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+
+      if(result.type === 'success') {
+        axios.post('https://don-forget-server.com/user/signin', {
+          email: ['google', result.user.email],
+          name: result.user.name
+        })
+        .then(res => res.data)
+        .then(res => {
+          AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
+          alert(`${res.name}님이 로그인되셨습니다`);
+          navigation.replace(`Tabs`, {userId : res.id})
+        })
+        .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
+          console.log("AsyncStorage:", result);
+        }))
+        .catch((err) => console.log(err));
+      } else {
+        return { cancelled: true };
+      }
+    }
+    catch(e) {
+      return { error: true }
+    }
+  }
+  
+  async function facebooklogIn() {
+    try {
+      await Facebook.initializeAsync({
+        appId: '1872331759575671',
+      });
+      const {
+        type,
+        token,
+        expirationDate,
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ['public_profile', 'email'],
+      });
+      if (type === 'success') {
+        // console.log("permissions:", permissions)
+        // Get the user's name using Facebook's Graph API
+        const response = await axios.get(`https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`);
+        console.log("response:", response.data.email)
+        console.log("response:", response.data.name)
+        axios.post('https://don-forget-server.com/user/signin', {
+          email: ['facebook', response.data.email],
+          name: response.data.name
+        })
+        .then(res => res.data)
+        .then(res => {
+          AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
+          alert(`${res.name}님이 로그인되셨습니다`);
+          navigation.replace(`Tabs`, {userId : res.id})
+        })
+        .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
+          console.log("AsyncStorage:", result);
+        }))
+        .catch((err) => console.log(err));
+      } else {
+        return { cancelled: true };
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  }
+
+  const signInWithGoogle = () => {
+    signInWithGoogleAsync()
+  }
+
+  const signInWithFacebook = () => {
+    facebooklogIn()
+  }
+
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={Logo} alt="Logo_don-forget" />
@@ -80,6 +164,12 @@ function Signin({ navigation }) {
         navigation.navigate("Signup")
       }}>
         <Text style={styles.registor_link}>회원가입</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.google} onPress={() => signInWithGoogle()}>
+        <Text style={styles.text}>구글로 로그인하기</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.facebook} onPress={() => signInWithFacebook()}>
+        <Text style={styles.text}>페이스북으로 로그인하기</Text>
       </TouchableOpacity>
     </View>
   )
@@ -163,4 +253,17 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 10
   },
+  google: {
+    backgroundColor: "rgb(209, 53, 50)",
+    width: "80%",
+    height: "7%",
+    borderRadius: 5,
+  },
+  facebook: {
+    backgroundColor: "rgb(49, 77, 157)",
+    width: "80%",
+    height: "7%",
+    borderRadius: 5,
+    marginTop: 10
+  }
 })
