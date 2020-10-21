@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, StyleSheet, FlatList, Alert, Image, Linking } from "react-native";
+import { View, Button, Text, StyleSheet, FlatList, Alert, Image, Linking, TextInput, SafeAreaView } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import axios from "axios";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons } from '@expo/vector-icons';
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons, Zocial } from '@expo/vector-icons';
 import ScheduleAdd from "./ScheduleAdd";
 import Modify from "./Modify";
 import ActionButton from 'react-native-action-button';
@@ -12,9 +12,21 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/Feather';
 
 
-function GetSchedule({ id, navigation, update, setUpdate }) {
+function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch }) {
   const [data, setData] = useState([]);
-  const [curData, setCurData] = useState("");
+
+  const [searchWord, setWord] = useState(null);
+  const [searchData, setSearchData] = useState([]);
+
+  const tags = ["생일", "결혼식", "장례식", "집들이", "취직", "입학", "출산", "돌잔치", "기념일", "기타"]
+
+  useEffect(() => {
+    if (isSearch) {
+      console.log(searchWord);
+      handleSearch();
+      setSearch(false);
+    }
+  })
 
   const otherBanks = () =>
     Alert.alert(
@@ -26,19 +38,19 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
           onPress: () => Linking.openURL("SmartBank2WIB://"),
         },
         {
-          text: "신한은행", 
+          text: "신한은행",
           onPress: () => Linking.openURL("sbankmoasign://")
         },
         {
-          text: "국민은행", 
+          text: "국민은행",
           onPress: () => Linking.openURL("kbStarbank://")
         },
         {
-          text: "농협은행", 
+          text: "농협은행",
           onPress: () => Linking.openURL("newsmartbanking://")
         },
         {
-          text: "기업은행", 
+          text: "기업은행",
           onPress: () => Linking.openURL("ibksmartbanking://")
         },
         {
@@ -46,10 +58,11 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
           onPress: () => console.log("cancel"),
           style: "cancel"
         },
-        
+
       ],
     );
-  
+
+
   const createAlert = (item) =>
     Alert.alert(
       "추가 및 삭제",
@@ -76,6 +89,15 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
     );
 
 
+  function handleSearch() {
+    axios.post(`https://don-forget-server.com/search/${id}`, {
+      data: searchWord
+    })
+      .then((res) => res.data)
+      .then((data) => setSearchData(data))
+      .catch((err) => console.log("err!!"))
+  }
+
   function handleRemove(item) {
     console.log(item)
     axios.delete(`https://don-forget-server.com/schedule/${id}`, {
@@ -87,6 +109,7 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
       .then(() => {
         console.log(data);
         setUpdate(true);
+        setSearch(true);
       })
   }
 
@@ -117,23 +140,72 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
     }
   });
 
+  function handleTag(tag) {
+    console.log(tag);
+    setWord(tag)
+    axios.post(`https://don-forget-server.com/search/${id}`, {
+      data: tag
+    })
+      .then((res) => res.data)
+      .then((data) => setSearchData(data))
+      .catch((err) => console.log("err!!"))
+  }
+
+
   console.log(data);
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.icon} onPress={() => {
-        navigation.navigate("ScheduleAdd")
-      }}>
-        <Text style={styles.addText}>Add Schedule + </Text>
-      </TouchableOpacity>
+      <Ionicons name="ios-search" size={20} style={inputStyles.icon} />
+      <TextInput
+        style={searchWord ? inputStyles.inputfocus : inputStyles.input}
+        onChangeText={text => setWord(text)}
+        placeholder="날짜 혹은 이벤트 이름을 입력해주세요..."
+        autoCapitalize="none"
+        value={searchWord}
+        placeholderTextColor="grey"
+        onSubmitEditing={handleSearch}
+      />
+      <View style={tagStyles.tag}>
+        {
+          tags.map((tag, i) => {
+            return (
+              <TouchableOpacity key={i} onPress={() => {
+                handleTag(tag);
+              }}>
+                <Text style={tagStyles[tag]}>#{tag}</Text></TouchableOpacity>
+            )
+          })
+        }
+      </View>
+          <FlatList
+            data={data}
+            style={searchWord === "" || searchWord === null ? styles.flatlist : styles.none}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <>
+                <TouchableOpacity style={styles.list} onPress={() => {
+                  createAlert(item);
+                }}>
+                  <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)} </Text>
+                  <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
+                  <Text style={styles.text}>{item.event_target}</Text>
+                  <Text style={styles.textType}>{item.type}</Text>
+                  <Text style={styles.gift}>{item.gift.slice(0, 2) === "선물" ?
+                    " " + item.gift.slice(3) : " ₩" + item.gift.slice(3)}</Text>
+                </TouchableOpacity>
+              </>)}
+          />
+  
       <FlatList
-        data={data}
+        data={searchData}
+        style={searchWord === "" ? styles.none : styles.flatlist}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <>
             <TouchableOpacity style={styles.list} onPress={() => {
               createAlert(item);
             }}>
-                <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)} </Text>
+              <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)} </Text>
               <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
               <Text style={styles.text}>{item.event_target}</Text>
               <Text style={styles.textType}>{item.type}</Text>
@@ -142,19 +214,26 @@ function GetSchedule({ id, navigation, update, setUpdate }) {
             </TouchableOpacity>
           </>)}
       />
-      <ActionButton buttonColor="#3b23a6" renderIcon={active => active ? (<Icon name="plus" style={styles.actionButtonIcon} /> ) : (<Icon name="won" style={styles.actionButtonIcon} />)}>
-          <ActionButton.Item buttonColor='rgb(254, 228, 9)' title="카카오뱅크" onPress={() => Linking.openURL("kakaobank://")}>
-            <Image style={styles.kakao} source={require('../../client/kakaobank_app.png')}/>
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='rgb(246, 246, 246)' title="토스" onPress={() => Linking.openURL("supertoss://")}>
-            <Image style={styles.toss} source={require('../../client/toss_app.png')}/>
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#1abc9c' title="기타 은행" onPress={() => {otherBanks();}}>
-            <Icon style={styles.others} name="ellipsis-h" />
-          </ActionButton.Item>
-        </ActionButton>
+      <View style={styles.buttons}>
+        <TouchableOpacity style={styles.addButton} onPress={() => {
+          navigation.navigate("ScheduleAdd")
+        }}>
+          <Text style={styles.addButtonAction}> + </Text>
+        </TouchableOpacity>
+      </View>
+      <ActionButton buttonColor="#3b23a6" renderIcon={active => active ? (<Icon name="plus" style={styles.actionButtonIcon} />) : (<Icon name="won" style={styles.actionButtonIcon} />)}>
+        <ActionButton.Item buttonColor='rgb(254, 228, 9)' title="카카오뱅크" onPress={() => Linking.openURL("kakaobank://")}>
+          <Image style={styles.kakao} source={require('../../client/kakaobank_app.png')} />
+        </ActionButton.Item>
+        <ActionButton.Item buttonColor='rgb(246, 246, 246)' title="토스" onPress={() => Linking.openURL("supertoss://")}>
+          <Image style={styles.toss} source={require('../../client/toss_app.png')} />
+        </ActionButton.Item>
+        <ActionButton.Item buttonColor='#1abc9c' title="기타 은행" onPress={() => { otherBanks(); }}>
+          <Icon style={styles.others} name="ellipsis-h" />
+        </ActionButton.Item>
+      </ActionButton>
     </View>
-    
+
   )
 }
 
@@ -164,17 +243,19 @@ export default function Schedule({ id }) {
   //데이터가 변경되면 reload
   const [update, setUpdate] = useState(true);
 
+  //search 동기화
+  const [isSearch, setSearch] = useState(false);
   return (
     <>
       <ScheduleStack.Navigator initialRouteName="GetSchedule">
         <ScheduleStack.Screen name="GetSchedule" options={{ title: 'Schedule' }} >
-          {(props) => <GetSchedule {...props} id={id} setUpdate={setUpdate} update={update} />}
+          {(props) => <GetSchedule {...props} id={id} setUpdate={setUpdate} update={update} isSearch={isSearch} setSearch={setSearch} />}
         </ScheduleStack.Screen>
         <ScheduleStack.Screen name="ScheduleAdd" options={{ title: '스케쥴 추가하기' }} >
           {(props) => <ScheduleAdd {...props} id={id} setUpdate={setUpdate} />}
         </ScheduleStack.Screen>
         <ScheduleStack.Screen name="Modify" options={{ title: '스케쥴 추가하기' }} >
-          {(props) => <Modify {...props} userId={id} setUpdate={setUpdate} />}
+          {(props) => <Modify {...props} userId={id} setUpdate={setUpdate} isSearch={isSearch} setSearch={setSearch} />}
         </ScheduleStack.Screen>
       </ScheduleStack.Navigator>
     </>
@@ -256,6 +337,11 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#CECECE"
   },
+  출산: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#FF6666"
+  },
   text: {
     fontSize: 17,
     paddingLeft: 10,
@@ -274,26 +360,37 @@ const styles = StyleSheet.create({
     position: "relative",
     top: "50%"
   },
-  icon: {
+  addButtonAction: {
+    fontSize: 30,
+    color: 'white',
+    padding: 4,
+    fontWeight: "500",
+
+    // position : "relative",
+    // top : "80%",
+    // left : "-70%"
+  },
+  addButton: {
+    backgroundColor: "#3b23a6",
+    borderRadius: 100,
+    width: "140%",
+    height: "32%",
+    alignItems: "center",
+    shadowRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    margin: 0
+  },
+  textType: {
     position: "relative",
-    left : "25%",
-    backgroundColor : "#759aff",
-    padding : "4%",
-    borderRadius : 30,
-    // width : "100%",
-    // height : "35%",
-    width : "50%",
-    alignItems : "center"
-  },
-  addText : {
-    color : "white",
-    fontWeight : "800",
-  },
-  textType : {
-    position : "relative",
     fontSize: 16,
     paddingLeft: 10,
-    paddingTop : 3,
+    paddingTop: 3,
     fontWeight: "300",
   },
   actionButtonIcon: {
@@ -311,5 +408,146 @@ const styles = StyleSheet.create({
   },
   others: {
     fontSize: 25
+  },
+  none: {
+    display: "none"
+  },
+  flatlist: {
+    position: "absolute",
+    height: "70%",
+    width: "100%",
+    top: "30%"
+  },
+  buttons: {
+    position: "relative",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    top: "90%",
+    left: "4%"
   }
+
+})
+
+
+const inputStyles = StyleSheet.create({
+  input: {
+    position: "relative",
+    top: "-3%",
+    left : "3%",
+    width: "90%",
+    height: "8%",
+    borderColor: 'white',
+    borderWidth: 1,
+    paddingLeft: "15%",
+    // marginBottom: 10,
+    marginTop: 20,
+    borderRadius: 30,
+    backgroundColor: "white",
+    shadowRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+  },
+  inputfocus: {
+    position: "relative",
+    top: "-3%",
+    left : "3%",
+    width: "90%",
+    height: "8%",
+    borderColor: 'white',
+    borderWidth: 1,
+    paddingLeft: "15%",
+    // marginBottom: 10,
+    marginTop: 20,
+    borderRadius: 30,
+    backgroundColor: "white",
+    color: "black",
+    shadowRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+  },
+  icon: {
+    position: "relative",
+    top: "6.5%",
+    left: "10%",
+    zIndex : 4000
+  },
+})
+
+
+const tagStyles = StyleSheet.create({
+  tag: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  생일: {
+    fontSize: 20,
+    color: "#FFB65B",
+    fontWeight: "800",
+    paddingLeft: 10
+  },
+  결혼식: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#FFCECE"
+    ,
+    paddingLeft: 10
+  },
+  장례식: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#737272",
+    paddingLeft: 10
+  },
+  집들이: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#6BACF8",
+    paddingLeft: 10
+  },
+  취직: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#FFF00C",
+    paddingLeft: 10
+  },
+  입학: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#A4F256",
+    paddingLeft: 10
+  },
+  돌잔치: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#97ECCF",
+    paddingLeft: 10
+  },
+  기념일: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#E1C5FF",
+    paddingLeft: 10
+  },
+  기타: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#CECECE",
+    paddingLeft: 10
+  },
+  출산: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#FF6666",
+    paddingLeft: 10
+  },
 })
