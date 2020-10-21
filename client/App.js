@@ -8,6 +8,7 @@ import Intro from "./component/Intro"
 import Home from "./component/Home"
 import Schdule from "./component/Schedule"
 import Search from "./component/Search"
+import Gift from "./component/Gift"
 import Mypage from "./component/Mypage"
 import Signin from "./component/Signin"
 import Signup from "./component/Signup"
@@ -45,19 +46,19 @@ function Tabs({ navigation, route }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({ headerTitle: getHeaderTitle(route) });
   }, [navigation, route]);
-  
+
   const [userId, setUserId] = useState("");
-  
+
   useEffect(() => {
-    async function getId(){
+    async function getId() {
       await AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
         return result;
       })
-      .then((result) => {
-        console.log(result);
-        let parse = JSON.parse(result);
-        setUserId(parse.id);
-      })
+        .then((result) => {
+          console.log(result);
+          let parse = JSON.parse(result);
+          setUserId(parse.id);
+        })
     }
     getId();
   }, [])
@@ -74,7 +75,7 @@ function Tabs({ navigation, route }) {
             : 'ios-home';
         } else if (route.name === 'Schedule') {
           iconName = focused ? 'ios-list-box' : 'ios-list';
-        } else if (route.name === 'Search') {
+        } else if (route.name === 'Gift') {
           iconName = 'ios-search'
         } else if (route.name === 'Mypage') {
           iconName = "ios-contact"
@@ -88,17 +89,14 @@ function Tabs({ navigation, route }) {
         activeTintColor: '#3b23a6',
         inactiveTintColor: 'gray',
         style: {
-          backgroundColor : "white",//color you want to change
+          backgroundColor: "white",//color you want to change
         }
       }}>
       <BottomTab.Screen name="Home" component={Home} />
       <BottomTab.Screen name="Schedule">
         {(props) => <Schedule {...props} id={userId} />}
       </BottomTab.Screen>
-
-      <BottomTab.Screen name="Search">
-      {(props) => <Search {...props} id={userId} />}
-      </BottomTab.Screen>
+      <BottomTab.Screen name="Gift" component={Gift} />
       <BottomTab.Screen name="Mypage" component={MypageTabScreen} />
     </BottomTab.Navigator>
   );
@@ -126,11 +124,11 @@ export default function App() {
             headerTitle: getHeaderTitle(route),
             headerStyle: {
               opacity: 0.8,
-              backgroundColor : "#1702ff"
+              backgroundColor: "#1702ff"
             },
             headerTitleStyle: {
               color: 'white',
-              fontWeight : "800"
+              fontWeight: "800"
             }
           })} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }} />
