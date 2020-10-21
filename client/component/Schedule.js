@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, StyleSheet, FlatList, Alert, Image, Linking, TextInput } from "react-native";
+import { View, Button, Text, StyleSheet, FlatList, Alert, Image, Linking, TextInput, SafeAreaView } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import axios from "axios";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons, Zocial } from '@expo/vector-icons';
 import ScheduleAdd from "./ScheduleAdd";
 import Modify from "./Modify";
@@ -14,12 +14,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch }) {
   const [data, setData] = useState([]);
-  const [curData, setCurData] = useState("");
 
   const [searchWord, setWord] = useState(null);
   const [searchData, setSearchData] = useState([]);
 
-
+  const tags = ["생일", "결혼식", "장례식", "집들이", "취직", "입학", "출산", "돌잔치", "기념일", "기타"]
 
   useEffect(() => {
     if (isSearch) {
@@ -141,11 +140,22 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
     }
   });
 
+  function handleTag(tag) {
+    console.log(tag);
+    setWord(tag)
+    axios.post(`https://don-forget-server.com/search/${id}`, {
+      data: tag
+    })
+      .then((res) => res.data)
+      .then((data) => setSearchData(data))
+      .catch((err) => console.log("err!!"))
+  }
+
 
   console.log(data);
   return (
     <View style={styles.container}>
-      <Ionicons name="ios-search" size={20} style={styles.icon} />
+      <Ionicons name="ios-search" size={20} style={inputStyles.icon} />
       <TextInput
         style={searchWord ? inputStyles.inputfocus : inputStyles.input}
         onChangeText={text => setWord(text)}
@@ -156,66 +166,36 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
         onSubmitEditing={handleSearch}
       />
       <View style={tagStyles.tag}>
-        <TouchableOpacity onPress={() => {
-          setWord("생일");
-          handleSearch();
-        }}><Text style={tagStyles.생일} >#생일</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("결혼식");
-          handleSearch();
-        }}><Text style={tagStyles.결혼식}>#결혼식</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("장례식");
-          handleSearch();
-        }}><Text style={tagStyles.장례식}>#장례식</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("집들이");
-          handleSearch();
-        }}><Text style={tagStyles.집들이}>#집들이</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("취직");
-          handleSearch();
-        }}><Text style={tagStyles.취직}>#취직</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("입학");
-          handleSearch();
-        }}><Text style={tagStyles.입학}>#입학</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("출산");
-          handleSearch();
-        }}><Text style={tagStyles.출산}>#출산</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("돌잔치");
-          handleSearch();
-        }}><Text style={tagStyles.돌잔치}>#돌잔치</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("기념일");
-           handleSearch();
-        }}><Text style={tagStyles.기념일}>#기념일</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          setWord("기타");
-          handleSearch();
-        }}><Text style={tagStyles.기타}>#기타</Text></TouchableOpacity>
+        {
+          tags.map((tag, i) => {
+            return (
+              <TouchableOpacity key={i} onPress={() => {
+                handleTag(tag);
+              }}>
+                <Text style={tagStyles[tag]}>#{tag}</Text></TouchableOpacity>
+            )
+          })
+        }
       </View>
-      <FlatList
-        data={data}
-        style={searchWord === "" ? styles.flatlist : styles.none}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <>
-            <TouchableOpacity style={styles.list} onPress={() => {
-              createAlert(item);
-            }}>
-              <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)} </Text>
-              <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
-              <Text style={styles.text}>{item.event_target}</Text>
-              <Text style={styles.textType}>{item.type}</Text>
-              <Text style={styles.gift}>{item.gift.slice(0, 2) === "선물" ?
-                " " + item.gift.slice(3) : " ₩" + item.gift.slice(3)}</Text>
-            </TouchableOpacity>
-          </>)}
-      />
+          <FlatList
+            data={data}
+            style={searchWord === "" || searchWord === null ? styles.flatlist : styles.none}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <>
+                <TouchableOpacity style={styles.list} onPress={() => {
+                  createAlert(item);
+                }}>
+                  <Text style={styles.date}>{(item.date).slice(5, 7)} / {(item.date).slice(8, 10)} </Text>
+                  <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
+                  <Text style={styles.text}>{item.event_target}</Text>
+                  <Text style={styles.textType}>{item.type}</Text>
+                  <Text style={styles.gift}>{item.gift.slice(0, 2) === "선물" ?
+                    " " + item.gift.slice(3) : " ₩" + item.gift.slice(3)}</Text>
+                </TouchableOpacity>
+              </>)}
+          />
+  
       <FlatList
         data={searchData}
         style={searchWord === "" ? styles.none : styles.flatlist}
@@ -234,11 +214,13 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
             </TouchableOpacity>
           </>)}
       />
-      <TouchableOpacity style={styles.addButton} onPress={() => {
-        navigation.navigate("ScheduleAdd")
-      }}>
-        <Text style={styles.addButtonAction}>+</Text>
-      </TouchableOpacity>
+      <View style={styles.buttons}>
+        <TouchableOpacity style={styles.addButton} onPress={() => {
+          navigation.navigate("ScheduleAdd")
+        }}>
+          <Text style={styles.addButtonAction}> + </Text>
+        </TouchableOpacity>
+      </View>
       <ActionButton buttonColor="#3b23a6" renderIcon={active => active ? (<Icon name="plus" style={styles.actionButtonIcon} />) : (<Icon name="won" style={styles.actionButtonIcon} />)}>
         <ActionButton.Item buttonColor='rgb(254, 228, 9)' title="카카오뱅크" onPress={() => Linking.openURL("kakaobank://")}>
           <Image style={styles.kakao} source={require('../../client/kakaobank_app.png')} />
@@ -249,7 +231,6 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
         <ActionButton.Item buttonColor='#1abc9c' title="기타 은행" onPress={() => { otherBanks(); }}>
           <Icon style={styles.others} name="ellipsis-h" />
         </ActionButton.Item>
-
       </ActionButton>
     </View>
 
@@ -380,9 +361,9 @@ const styles = StyleSheet.create({
     top: "50%"
   },
   addButtonAction: {
-    fontSize: 40,
+    fontSize: 30,
     color: 'white',
-    padding: 3,
+    padding: 4,
     fontWeight: "500",
 
     // position : "relative",
@@ -390,13 +371,10 @@ const styles = StyleSheet.create({
     // left : "-70%"
   },
   addButton: {
-    position: "relative",
-    top: "50%",
-    left: "10%",
     backgroundColor: "#3b23a6",
     borderRadius: 100,
-    width: "17%",
-    height: "34%",
+    width: "140%",
+    height: "32%",
     alignItems: "center",
     shadowRadius: 10,
     shadowColor: "#000",
@@ -433,6 +411,19 @@ const styles = StyleSheet.create({
   },
   none: {
     display: "none"
+  },
+  flatlist: {
+    position: "absolute",
+    height: "70%",
+    width: "100%",
+    top: "30%"
+  },
+  buttons: {
+    position: "relative",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    top: "90%",
+    left: "4%"
   }
 
 })
@@ -441,15 +432,16 @@ const styles = StyleSheet.create({
 const inputStyles = StyleSheet.create({
   input: {
     position: "relative",
-    top: "0%",
-    width: "100%",
+    top: "-3%",
+    left : "3%",
+    width: "90%",
     height: "8%",
     borderColor: 'white',
     borderWidth: 1,
     paddingLeft: "15%",
-    marginBottom: 10,
+    // marginBottom: 10,
     marginTop: 20,
-    borderRadius: 10,
+    borderRadius: 30,
     backgroundColor: "white",
     shadowRadius: 10,
     shadowColor: "#000",
@@ -462,15 +454,16 @@ const inputStyles = StyleSheet.create({
   },
   inputfocus: {
     position: "relative",
-    top: "0%",
-    width: "100%",
+    top: "-3%",
+    left : "3%",
+    width: "90%",
     height: "8%",
     borderColor: 'white',
     borderWidth: 1,
     paddingLeft: "15%",
-    marginBottom: 10,
+    // marginBottom: 10,
     marginTop: 20,
-    borderRadius: 10,
+    borderRadius: 30,
     backgroundColor: "white",
     color: "black",
     shadowRadius: 10,
@@ -483,9 +476,10 @@ const inputStyles = StyleSheet.create({
     shadowRadius: 4.65,
   },
   icon: {
-    position: "absolute",
-    top: "12%",
-    left: "10%"
+    position: "relative",
+    top: "6.5%",
+    left: "10%",
+    zIndex : 4000
   },
 })
 
