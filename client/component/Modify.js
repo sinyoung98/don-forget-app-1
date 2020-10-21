@@ -6,10 +6,11 @@ import RNPickerSelect from 'react-native-picker-select';
 import { StackActions } from "@react-navigation/native";
 import axios from "axios";
 
-export default function Modify({ navigation, route, userId, setUpdate, setSearch }) {
+export default function Modify({ navigation, route, userId, setUpdate ,setSearch}) {
 
-    console.log(userId);
+
     const { date, event_target, gift, giveandtake, id, type } = route.params.data;
+ 
 
     const [selectDate, setDate] = useState(date);
     const [giveandTake, setGiveandTake] = useState(giveandtake);
@@ -55,15 +56,16 @@ export default function Modify({ navigation, route, userId, setUpdate, setSearch
             })
                 .then((res) => res.data)
                 .then((data) => {
-                    console.log(data);
-                    if (setUpdate) {
+                    // console.log(data);
+                    if (setSearch){
+                        setSearch(true);
+                        setUpdate(true);
+                        navigation.dispatch(StackActions.popToTop());
+                    } else {
                         setUpdate(true);
                         navigation.navigate("GetSchedule");
                     }
-                    else {
-                        setSearch(true);
-                        navigation.navigate("SearchData");
-                    }
+                
                 })
                 .catch((err) => console.log("err!!!"))
 
