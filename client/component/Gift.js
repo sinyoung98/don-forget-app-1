@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { AsyncStorage, View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from "react-native"
 import { Ionicons } from '@expo/vector-icons';
 import axios from "axios";
+import TopGift from "./TopGift";
 
 export default function Gift({ navigation, useEffectSearch, setSearch }) {
 
@@ -73,7 +74,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
             }}><Text style={styles.tag_Text}>{tag}</Text></TouchableOpacity>)
         })}
       </View>
-
+     <TopGift/>
     </ScrollView>
   );
 }
