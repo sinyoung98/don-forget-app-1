@@ -42,18 +42,6 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
           onPress: () => Linking.openURL("sbankmoasign://")
         },
         {
-          text: "국민은행",
-          onPress: () => Linking.openURL("kbStarbank://")
-        },
-        {
-          text: "농협은행",
-          onPress: () => Linking.openURL("newsmartbanking://")
-        },
-        {
-          text: "기업은행",
-          onPress: () => Linking.openURL("ibksmartbanking://")
-        },
-        {
           text: "취소",
           onPress: () => console.log("cancel"),
           style: "cancel"
@@ -159,7 +147,7 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
       <TextInput
         style={searchWord ? inputStyles.inputfocus : inputStyles.input}
         onChangeText={text => setWord(text)}
-        placeholder="날짜 혹은 이벤트 이름을 입력해주세요..."
+        placeholder="날짜 또는 경조사 종류를 입력하세요."
         autoCapitalize="none"
         value={searchWord}
         placeholderTextColor="grey"
@@ -190,8 +178,8 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
                   <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
                   <Text style={styles.text}>{item.event_target}</Text>
                   <Text style={styles.textType}>{item.type}</Text>
-                  <Text style={styles.gift}>{item.gift.slice(0, 2) === "선물" ?
-                    " " + item.gift.slice(3) : " ₩" + item.gift.slice(3)}</Text>
+                  <Text style={styles.gift}>{item.gift[0] === "선물" ?
+                    " " + item.gift.slice(3) : " ₩" + item.gift[1]}</Text>
                 </TouchableOpacity>
               </>)}
           />
@@ -209,8 +197,8 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
               <Text style={styles[item.type]}>{item.giveandtake === "give" ? "|→ " : "|← "}</Text>
               <Text style={styles.text}>{item.event_target}</Text>
               <Text style={styles.textType}>{item.type}</Text>
-              <Text style={styles.gift}>{item.gift.slice(0, 2) === "선물" ?
-                " " + item.gift.slice(3) : " ₩" + item.gift.slice(3)}</Text>
+              <Text style={styles.gift}>{item.gift[0] === "선물" ?
+                " " + item.gift.slice(3) : " ₩" + item.gift[1]}</Text>
             </TouchableOpacity>
           </>)}
       />
@@ -218,10 +206,10 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
         <TouchableOpacity style={styles.addButton} onPress={() => {
           navigation.navigate("ScheduleAdd")
         }}>
-          <Text style={styles.addButtonAction}> + </Text>
+          <Text style={styles.addButtonAction}>경조사 추가하기</Text>
         </TouchableOpacity>
       </View>
-      <ActionButton buttonColor="#3b23a6" renderIcon={active => active ? (<Icon name="plus" style={styles.actionButtonIcon} />) : (<Icon name="won" style={styles.actionButtonIcon} />)}>
+      <ActionButton style={styles.actionBtn} buttonColor="#3b23a6" renderIcon={active => active ? (<Icon name="plus" style={styles.actionButtonIcon} />) : (<Icon name="won" style={styles.actionButtonIcon} />)}>
         <ActionButton.Item buttonColor='rgb(254, 228, 9)' title="카카오뱅크" onPress={() => Linking.openURL("kakaobank://")}>
           <Image style={styles.kakao} source={require('../../client/kakaobank_app.png')} />
         </ActionButton.Item>
@@ -272,78 +260,79 @@ const styles = StyleSheet.create({
   list: {
     position: "relative",
     margin: 10,
+    marginTop: 1,
     width: "95%",
     borderBottomWidth: 1,
     borderColor: "white",
     backgroundColor: "white",
     borderRadius: 10,
     shadowRadius: 10,
-    shadowColor: "#000",
+    shadowColor: "grey",
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 1,
     },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    padding: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     paddingLeft: 20,
     elevation: 7,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: "8%",
+    padding: "4%",
   },
   생일: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#FFB65B",
     fontWeight: "800",
   },
   결혼식: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#FFCECE"
   },
   장례식: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#737272"
   },
   집들이: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#6BACF8"
   },
   취직: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#FFF00C"
   },
   입학: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#A4F256"
   },
   돌잔치: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#97ECCF"
   },
   기념일: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#E1C5FF"
   },
   기타: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#CECECE"
   },
   출산: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "800",
     color: "#FF6666"
   },
   text: {
-    fontSize: 17,
+    fontSize: 15,
+    paddingTop: 3,
     paddingLeft: 10,
     fontWeight: "600"
   },
@@ -351,47 +340,53 @@ const styles = StyleSheet.create({
     position: "relative",
     left: "90%",
     top: "100%",
-    fontSize: 18,
+    fontSize: 15,
     color: "grey"
   },
   date: {
-    fontWeight: "200",
-    fontSize: 20,
+    fontWeight: "300",
+    fontSize: 15,
     position: "relative",
     top: "50%"
   },
   addButtonAction: {
-    fontSize: 30,
-    color: 'white',
-    padding: 4,
+    fontSize: 15,
+    padding: 15,
     fontWeight: "500",
-
+    color: "#3b23a6",
     // position : "relative",
     // top : "80%",
     // left : "-70%"
   },
   addButton: {
-    backgroundColor: "#3b23a6",
-    borderRadius: 100,
-    width: "140%",
-    height: "32%",
+    backgroundColor: "rgba(59, 35, 166, 0.1)",
+    // borderColor: "#3b23a6",
+    // borderWidth: 0.3,
+    borderRadius: 10,
+    width: "278%",
+    height: "30%",
     alignItems: "center",
-    shadowRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    margin: 0
+    // shadowRadius: 0,
+    // shadowColor: "#fff",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 0,
+    // },
+    // shadowOpacity: 0,
+    // shadowRadius: 0,
+    marginTop: 10,
   },
   textType: {
     position: "relative",
-    fontSize: 16,
+    fontSize: 15,
     paddingLeft: 10,
     paddingTop: 3,
     fontWeight: "300",
+  },
+  actionBtn: {
+    position: "relative",
+    top: "28%",
+    left: "3%"
   },
   actionButtonIcon: {
     fontSize: 20,
@@ -407,7 +402,8 @@ const styles = StyleSheet.create({
     width: 50
   },
   others: {
-    fontSize: 25
+    fontSize: 25,
+    color: "white"
   },
   none: {
     display: "none"
@@ -416,14 +412,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "70%",
     width: "100%",
-    top: "30%"
+    top: "42%"
   },
   buttons: {
     position: "relative",
     flexDirection: 'row',
     flexWrap: 'wrap',
-    top: "90%",
-    left: "4%"
+    top: "6%",
+    left: "1%",
   }
 
 })
@@ -434,7 +430,7 @@ const inputStyles = StyleSheet.create({
     position: "relative",
     top: "-3%",
     left : "3%",
-    width: "90%",
+    width: "93%",
     height: "8%",
     borderColor: 'white',
     borderWidth: 1,
@@ -456,7 +452,7 @@ const inputStyles = StyleSheet.create({
     position: "relative",
     top: "-3%",
     left : "3%",
-    width: "90%",
+    width: "93%",
     height: "8%",
     borderColor: 'white',
     borderWidth: 1,
@@ -490,64 +486,67 @@ const tagStyles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   생일: {
-    fontSize: 20,
+    fontSize: 13.5,
     color: "#FFB65B",
     fontWeight: "800",
-    paddingLeft: 10
+    paddingLeft: 18
   },
   결혼식: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
-    color: "#FFCECE"
-    ,
-    paddingLeft: 10
+    color: "#FFCECE",
+    paddingLeft: 18
   },
   장례식: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#737272",
-    paddingLeft: 10
+    paddingLeft: 18
   },
   집들이: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#6BACF8",
-    paddingLeft: 10
+    paddingLeft: 18
   },
   취직: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#FFF00C",
-    paddingLeft: 10
+    paddingLeft: 18
   },
   입학: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#A4F256",
-    paddingLeft: 10
+    paddingLeft: 18,
   },
   돌잔치: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#97ECCF",
-    paddingLeft: 10
+    paddingLeft: 18,
+    paddingTop: 5
   },
   기념일: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#E1C5FF",
-    paddingLeft: 10
+    paddingLeft: 18,
+    paddingTop: 5
   },
   기타: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#CECECE",
-    paddingLeft: 10
+    paddingLeft: 18,
+    paddingTop: 5
   },
   출산: {
-    fontSize: 20,
+    fontSize: 13.5,
     fontWeight: "800",
     color: "#FF6666",
-    paddingLeft: 10
+    paddingLeft: 18,
+    paddingTop: 5
   },
 })
