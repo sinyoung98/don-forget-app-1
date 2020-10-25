@@ -50,7 +50,7 @@ export default function Mypage({ navigation }) {
 
   return (
     <View style={{ backgroundColor: "#fff", height: Dimensions.get('window').height, flexDirection: "column" }}>
-      <Text style={styles.title}>Mypage</Text>
+      <Text style={styles.title}>경조사 지출 통계</Text>
       {userData !== null ? <>
         <Chart id={userData.id} />
 
