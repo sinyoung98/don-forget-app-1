@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         // alignItems: 'flex-start',
         // position : "absolute", 
         padding: 10,
-        // marginBottom : "30%"
+        // marginTop : 30
     },
     h1: {
         fontWeight: "800",
