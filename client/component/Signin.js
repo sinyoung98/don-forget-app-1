@@ -74,7 +74,7 @@ function Signin({ navigation }) {
         .then(res => res.data)
         .then(res => {
           AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
-          alert(`${res.name}님이 로그인되셨습니다`);
+          alert(`${res.name}님 환영합니다.`);
           navigation.replace(`Tabs`, {userId : res.id})
         })
         .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
@@ -117,7 +117,7 @@ function Signin({ navigation }) {
         .then(res => res.data)
         .then(res => {
           AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
-          alert(`${res.name}님이 로그인되셨습니다`);
+          alert(`${res.name}님 환영합니다.`);
           navigation.replace(`Tabs`, {userId : res.id})
         })
         .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
@@ -143,31 +143,31 @@ function Signin({ navigation }) {
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={Logo} alt="Logo_don-forget" />
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>로그인</Text>
       <TextInput
         style={email ? styles.inputfocus : styles.input}
         onChangeText={text => setEmail(text)}
-        placeholder="Email Address *"
+        placeholder="이메일 주소 *"
         autoCapitalize="none"
         value={email}
       />
       <TextInput
         style={password ? styles.inputfocus : styles.input}
         onChangeText={text => setPassword(text)}
-        placeholder="Password *"
+        placeholder="비밀번호 *"
         autoCapitalize="none"
         value={password}
         secureTextEntry={true}
       />
 
       <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleLoginBtn}>
-        <Text style={styles.text}>LOGIN</Text>
+        <Text style={styles.text}>로그인</Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.8} onPress={() => {
         console.log("hi")
         navigation.navigate("FindPW")
       }}>
-        <Text style={styles.link} >Forgot Password?</Text>
+        <Text style={styles.link} >비밀번호 찾기</Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.8} onPress={() => {
         navigation.navigate("Signup")
@@ -175,10 +175,10 @@ function Signin({ navigation }) {
         <Text style={styles.registor_link}>회원가입</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.google} onPress={() => signInWithGoogle()}>
-        <Text style={styles.text}>구글로 로그인하기</Text>
+        <Text style={styles.text}>구글로 로그인</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.facebook} onPress={() => signInWithFacebook()}>
-        <Text style={styles.text}>페이스북으로 로그인하기</Text>
+        <Text style={styles.text}>페이스북으로 로그인</Text>
       </TouchableOpacity>
     </View>
   )
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   },
   input: {
     position: "relative",
-    top: "-5%",
+    top: "0%",
     width: "80%",
     borderTopWidth: 0,
     borderLeftWidth: 0,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   inputfocus: {
     position: "relative",
-    top: "-5%",
+    top: "0%",
     width: "80%",
     borderTopWidth: 0,
     borderLeftWidth: 0,
@@ -235,11 +235,11 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "relative",
-    top: "-0%",
+    top: "2%",
     width: "80%",
     height: "7%",
     borderRadius: 5,
-    backgroundColor: "#211ebf",
+    backgroundColor: "#3b23a6",
   },
   text: {
     color: "white",
@@ -248,27 +248,31 @@ const styles = StyleSheet.create({
   },
   link: {
     position: "relative",
-    top: "11%",
-    left: "-25%",
+    top: "60%",
+    left: "-30%",
     color: "#4c52f7",
     fontSize: 13,
     marginTop: 10
   },
   registor_link: {
     position: "relative",
-    top: "-90%",
-    left: "30%",
+    top: "-40%",
+    left: "34%",
     color: "#4c52f7",
     fontSize: 13,
     marginTop: 10
   },
   google: {
+    position: "relative",
+    top: "2%",
     backgroundColor: "rgb(209, 53, 50)",
     width: "80%",
     height: "7%",
     borderRadius: 5,
   },
   facebook: {
+    position: "relative",
+    top: "2%",
     backgroundColor: "rgb(49, 77, 157)",
     width: "80%",
     height: "7%",

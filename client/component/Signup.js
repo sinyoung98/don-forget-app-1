@@ -120,21 +120,21 @@ export default function Signup({ navigation }) {
       <TextInput
         style={inputEmail ? styles.inputfocus : styles.input}
         onChangeText={text => setEmail(text)}
-        placeholder="Email Address *"
+        placeholder="이메일 주소 *"
         autoCapitalize="none"
         value={inputEmail}
       />
       <TextInput
         style={inputName ? styles.inputfocus : styles.input}
         onChangeText={text => setName(text)}
-        placeholder="Name *"
+        placeholder="이름 *"
         autoCapitalize="none"
         value={inputName}
       />
       <TextInput
         style={inputPW ? styles.inputfocus : styles.input}
         onChangeText={text => setPW(text)}
-        placeholder="Password *"
+        placeholder="비밀번호 *"
         autoCapitalize="none"
         value={inputPW}
         secureTextEntry={true}
@@ -142,7 +142,7 @@ export default function Signup({ navigation }) {
       <TextInput
         style={inputPWCheck ? styles.inputfocus : styles.input}
         onChangeText={text => setPWCheck(text)}
-        placeholder="PasswordCheck *"
+        placeholder="비밀번호 확인 *"
         autoCapitalize="none"
         value={inputPWCheck}
         secureTextEntry={true}
@@ -151,7 +151,7 @@ export default function Signup({ navigation }) {
         <RNPickerSelect
           style={styles.select}
           placeholder={{
-            label: 'Password Hint *',
+            label: '비밀번호 찾기 힌트 질문 *',
             value: null,
           }}
           onValueChange={(value) => {
@@ -168,7 +168,7 @@ export default function Signup({ navigation }) {
       <TextInput
         style={hintAnswer ? styles.inputfocus : styles.input}
         onChangeText={text => setAnswer(text)}
-        placeholder="PasswordCheck *"
+        placeholder="비밀번호 찾기 힌트 답 *"
         autoCapitalize="none"
         value={hintAnswer}
       />

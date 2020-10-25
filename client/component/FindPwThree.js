@@ -52,7 +52,7 @@ export default function FindPwThree({ navigation, route }) {
             <TextInput
                 style={password ? styles.inputfocus : styles.input}
                 onChangeText={text => setPassword(text)}
-                placeholder="New password *"
+                placeholder="새 비밀번호 *"
                 autoCapitalize="none"
                 value={password}
                 secureTextEntry={true}
@@ -60,7 +60,7 @@ export default function FindPwThree({ navigation, route }) {
             <TextInput
                 style={pwCheck ? styles.inputfocus : styles.input}
                 onChangeText={text => setpwCheck(text)}
-                placeholder="New password Check*"
+                placeholder="새 비밀번호 확인*"
                 autoCapitalize="none"
                 value={pwCheck}
                 secureTextEntry={true}
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         borderColor: '#c5c5c5',
         borderWidth: 1,
         padding: "3%",
+        marginBottom: 5
     },
     inputfocus: {
         position: "relative",
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
         borderColor: '#211ebf',
         borderWidth: 1,
         padding: "3%",
+        marginBottom: 5
     },
     button: {
         position: "relative",

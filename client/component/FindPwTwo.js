@@ -39,7 +39,7 @@ export default function FindPwTwo({route, navigation}){
 
     return (
         <View style={styles.container}>
-             <Text style={styles.title}>Step 2.</Text>
+             <Text style={styles.title}>비밀번호 찾기 2단계</Text>
              <Text style={styles.text}>{question}</Text>
              <TextInput
                 style={userAnswer ? styles.inputfocus : styles.input}
@@ -50,7 +50,7 @@ export default function FindPwTwo({route, navigation}){
                 
             />
             <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleStepTwo}>
-                <Text style={styles.buttonText}>Next</Text>
+                <Text style={styles.buttonText}>다음</Text>
             </TouchableOpacity>
              </View>
       );

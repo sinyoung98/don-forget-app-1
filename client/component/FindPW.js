@@ -42,8 +42,8 @@ export default function FindPW({ navigation }) {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Step one 1.</Text>
-            <Text style={styles.text}>비밀번호를 찾고자 하는 아이디와 이름을 입력해주세요</Text>
+            <Text style={styles.title}>비밀번호 찾기 1단계</Text>
+            <Text style={styles.text}>비밀번호를 찾고자 하는 이메일과 이름을 입력해주세요.</Text>
             <TextInput
                 style={email ? styles.inputfocus : styles.input}
                 onChangeText={text => setEmail(text)}
@@ -59,7 +59,7 @@ export default function FindPW({ navigation }) {
                 value={name}
             />
             <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleStepOne}>
-                <Text style={styles.buttonText}>Next</Text>
+                <Text style={styles.buttonText}>다음</Text>
             </TouchableOpacity>
 
 
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
         borderColor: '#c5c5c5',
         borderWidth: 1,
         padding: "3%",
+        marginBottom: 5
     },
     inputfocus: {
         position: "relative",
@@ -99,6 +100,7 @@ const styles = StyleSheet.create({
         borderColor: '#211ebf',
         borderWidth: 1,
         padding: "3%",
+        marginBottom: 5
     },
     button: {
         position: "relative",
