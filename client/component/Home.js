@@ -210,7 +210,7 @@ export default function Home() {
         <Text style={expect.textTwo}> 지출 예상 금액 : {nextMonth[1]} 원</Text>
         <Text style={expect.textTwo}> 지출 예상 선물 : {nextMonth[2]} 개</Text>
         <TouchableOpacity style={expect.close} onPress={() => setOpenNextMonth(false)}>
-          <Text>✕</Text>
+          <Text style={expect.closeBtn}>✕</Text>
         </TouchableOpacity>
         </View>
       {/* 월 선택 모달 */}
@@ -265,26 +265,41 @@ export default function Home() {
 
 const expect = StyleSheet.create({
   content : {
-    backgroundColor : "#d3c9ff",
+    backgroundColor : "rgba(59,35,166,.1)",
+    borderRadius: 5,
     position : "relative",
-    paddingLeft : 10,
+    paddingLeft : 15,
     width : "100%",
-    height : "17%",
+    height : "15%",
     marginBottom : 10
   },
   text : {
+    position : "relative",
+    top : "-8%",
     fontWeight : "700",
-    color : "#3b22a9",
-    paddingLeft : 20
+    color : "#3b23a6",
+    paddingLeft : 20,
   },
   icon : {
     position : "relative",
-    top : "20%"
+    top : "13%"
   },
   close : {
     position : "absolute",
-    right : "10%",
-    top : "20%"
+    right : "4%",
+    top : "13%"
+  },
+  closeBtn: {
+    color : "#3b23a6",
+    fontSize: 17,
+    fontWeight: "900"
+  },
+  textTwo: {
+    fontSize: 12,
+    paddingTop: 2,
+    position : "relative",
+    top : "-3%",
+    left: "6%"
   }
 })
 
