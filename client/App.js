@@ -26,7 +26,7 @@ const BottomTab = createBottomTabNavigator();
 function getHeaderTitle(route) {
   const routeName = route.state
     ? route.state.routes[route.state.index].name // 현재 active된 route name을 tab navigator에서 가져온다
-    : route.params?.screen || 'Home';
+    : route.params?.screen || '캘린더';
 
   return routeName;
 }
@@ -69,15 +69,15 @@ function Tabs({ navigation, route }) {
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === 'Home') {
+        if (route.name === '캘린더') {
           iconName = focused
-            ? 'ios-home'
-            : 'ios-home';
-        } else if (route.name === 'Schedule') {
+            ? 'ios-calendar'
+            : 'ios-calendar';
+        } else if (route.name === '경조사') {
           iconName = focused ? 'ios-list-box' : 'ios-list';
-        } else if (route.name === 'Gift') {
+        } else if (route.name === '추천선물') {
           iconName = 'ios-search'
-        } else if (route.name === 'Mypage') {
+        } else if (route.name === '마이페이지') {
           iconName = "ios-contact"
         }
 
@@ -90,14 +90,15 @@ function Tabs({ navigation, route }) {
         inactiveTintColor: 'gray',
         style: {
           backgroundColor: "white",//color you want to change
+          paddingBottom: 6
         }
       }}>
-      <BottomTab.Screen name="Home" component={Home} />
-      <BottomTab.Screen name="Schedule">
+      <BottomTab.Screen name="캘린더" component={Home} />
+      <BottomTab.Screen name="경조사">
         {(props) => <Schedule {...props} id={userId} />}
       </BottomTab.Screen>
-      <BottomTab.Screen name="Gift" component={Gift} />
-      <BottomTab.Screen name="Mypage" component={MypageTabScreen} />
+      <BottomTab.Screen name="추천선물" component={Gift} />
+      <BottomTab.Screen name="마이페이지" component={MypageTabScreen} />
     </BottomTab.Navigator>
   );
 }
@@ -123,12 +124,12 @@ export default function App() {
           <Stack.Screen name="Tabs" component={Tabs} options={({ route }) => ({ // point!!!!!!
             headerTitle: getHeaderTitle(route),
             headerStyle: {
-              opacity: 0.8,
-              backgroundColor: "#1702ff"
+              opacity: 1,
+              backgroundColor: "#3b23a6"
             },
             headerTitleStyle: {
               color: 'white',
-              fontWeight: "800"
+              fontWeight: "600"
             }
           })} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: '회원가입' }} />
