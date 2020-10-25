@@ -199,7 +199,8 @@ const styles = StyleSheet.create({
   tags: {
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingLeft: 25
+    paddingLeft: 25,
+    marginBottom : "3%"
   },
   tag_btn: {
     margin: 4,
