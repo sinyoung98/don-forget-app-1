@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
         // position : "absolute", 
         padding: 10,
         // marginBottom : "30%"
+        marginTop : 10
     },
     h1: {
         fontWeight: "800",
