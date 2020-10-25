@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Alert, Button } from 'react-native';
 import axios from "axios";
 import Logo from '../Logo.png';
 import { StackActions } from "@react-navigation/native";
@@ -11,7 +11,16 @@ function Signin({ navigation }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  
+  const createAlert = (name) =>
+  Alert.alert(
+    "⚠️ 제목",
+    `${name}님 환영합니다`,
+    [
+      { text: "OK", onPress: () => console.log("OK Pressed") }
+    ],
+    { cancelable: false }
+  );
   
   useEffect(() => {
     async function checkUser() {
@@ -41,7 +50,7 @@ function Signin({ navigation }) {
         console.log("email:", email);
         console.log("password:", password);
         AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(response));
-        alert(`${response.name}님이 로그인되셨습니다`);
+        createAlert(response.name)
         navigation.replace(`Tabs`, {userId : response.id})
       })
       .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
