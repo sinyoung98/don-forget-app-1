@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from "axios";
 import TopGift from "./TopGift";
 import * as Linking from "expo-linking";
+import Emoji from "./Emoji"
 
 export default function Gift({ navigation, useEffectSearch, setSearch }) {
 
@@ -15,7 +16,8 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
   const [preItems, setPreItems] = useState(0);
   const [items, setItems] = useState(4);
 
-  const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "취직 축하 선물", "수능 응원"]
+  const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "취직 축하 선물", "수능 응원", "카카오톡 이모티콘 순위"]
+  const [kakaoEmoji, setEmoji] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -50,8 +52,12 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
   }
 
   function handleTagSearch(tag) {
- 
-    axios.post(`https://don-forget-server.com/gift/find/?text=${tag}`)
+
+    if (tag === "카카오톡 이모티콘 순위"){
+      setEmoji(!kakaoEmoji);
+    }
+    else {
+      axios.post(`https://don-forget-server.com/gift/find/?text=${tag}`)
       .then((res) => res.data)
       .then((data) => {
         setSearchData(searchData.concat(data.slice(preItems, items)));
@@ -61,6 +67,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
       })
       .then(() => setSearchKeyword(tag))
       .catch((err) => console.log("err!!"))
+    }
   }
 
   function handleCount(item){
@@ -150,8 +157,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
             onEndReachedThreshold={0.5}
           // onScrollEndDrag = {handleSearch}
           />
-          :
-          <TopGift />
+          : (kakaoEmoji ? <Emoji /> : <TopGift />)
       }
     </View>
   );
