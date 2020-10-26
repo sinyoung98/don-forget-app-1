@@ -137,6 +137,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
               if (title.length >= 26) {
                 title = title.slice(0, 26) + "..."
               }
+              const price = new Intl.NumberFormat().format(Number(item.item.lprice))
               return (
                 <TouchableOpacity key={item.index} style={listStyles.list} onPress={() => {
                   Linking.openURL(item.item.link);
@@ -147,7 +148,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
                     source={{ uri: item.item.image }}
                   />
                   <Text style={listStyles.text}>{title}</Text>
-                  <Text style={listStyles.price}>{item.item.lprice}원</Text>
+                  <Text style={listStyles.price}>{price}원</Text>
                   <Text style={{ fontSize: 12, left: 2 }}>{item.item.category1}원</Text>
                 </TouchableOpacity>
               )
