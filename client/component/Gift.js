@@ -3,6 +3,8 @@ import { AsyncStorage, View, Text, StyleSheet, TouchableOpacity, TextInput, Scro
 import { Ionicons } from '@expo/vector-icons';
 import axios from "axios";
 import TopGift from "./TopGift";
+import * as Linking from "expo-linking";
+import Emoji from "./Emoji"
 
 export default function Gift({ navigation, useEffectSearch, setSearch }) {
 
@@ -10,7 +12,8 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
   const [keyword, setKeyword] = useState(null)
   const [data, setData] = useState([]);
 
-  const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "취직 축하 선물", "수능 응원"]
+  const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "취직 축하 선물", "수능 응원", "카카오톡 이모티콘 순위"]
+  const [kakaoEmoji, setEmoji] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -42,14 +45,17 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
       .catch((err) => console.log("err!!"))
   }
   function handleTagSearch(tag) {
-    console.log(tag)
-    axios.post(`https://don-forget-server.com/search/${userData.id}`, {
-      data: tag
-    })
-      .then((res) => res.data)
-      .then((data) => setData(data))
-      .then(() => console.log(data))
-      .catch((err) => console.log("err!!"))
+
+    if (tag === "카카오톡 이모티콘 순위") {
+      setEmoji(!kakaoEmoji);
+    }
+    else {
+      axios.post(`https://don-forget-server.com/gift/find/?text=${tag}`)
+        .then((res) => res.data)
+        .then((data) => setData(data))
+        .then(() => console.log(data))
+        .catch((err) => console.log("err!!"))
+    }
   }
 
   return (
@@ -74,7 +80,41 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
             }}><Text style={styles.tag_Text}>{tag}</Text></TouchableOpacity>)
         })}
       </View>
-      <TopGift />
+      {
+        searchKeyword !== "" ?
+          <FlatList
+            // style={listStyles.flatlist}
+            numColumns={2}
+            data={searchData}
+            renderItem={(item) => {
+              let title = item.item.title;
+              title = title.replaceAll("<b>", "");
+              title = title.replaceAll("</b>", "");
+              if (title.length >= 26) {
+                title = title.slice(0, 26) + "..."
+              }
+              return (
+                <TouchableOpacity key={item.index} style={listStyles.list} onPress={() => {
+                  Linking.openURL(item.item.link);
+                  handleCount(item.item);
+                }}>
+                  <Image
+                    style={styles.image}
+                    source={{ uri: item.item.image }}
+                  />
+                  <Text style={listStyles.text}>{title}</Text>
+                  <Text style={listStyles.price}>{item.item.lprice}원</Text>
+                  <Text style={{ fontSize: 12, left: 2 }}>{item.item.category1}원</Text>
+                </TouchableOpacity>
+              )
+            }}
+            keyExtractor={(item) => item.index}
+            onEndReached={handleSearch}
+            onEndReachedThreshold={0.5}
+          // onScrollEndDrag = {handleSearch}
+          />
+          : (kakaoEmoji ? <Emoji /> : <TopGift />)
+      }
     </ScrollView>
   );
 }
@@ -121,7 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     paddingLeft: 25,
-    marginBottom : "3%"
+    marginBottom: "3%"
   },
   tag_btn: {
     margin: 4,
