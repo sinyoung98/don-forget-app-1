@@ -208,9 +208,9 @@ export default function Home() {
       <Ionicons name="ios-checkmark-circle-outline" size={20} color="#3b22a9" style={expect.icon}/>
         <Text style= {expect.text}> 다음달 {nextMonth[0]}개의 이벤트가 있어요!</Text>
         <Text style={expect.textTwo}> 지출 예상 금액 : {nextMonth[1]} 원</Text>
-        <Text style={expect.textTwo}> 지출 예상 선물 : {nextMonth[2]} 개</Text>
+        <Text style={expect.textThree}> 지출 예상 선물 : {nextMonth[2]} 개</Text>
         <TouchableOpacity style={expect.close} onPress={() => setOpenNextMonth(false)}>
-          <Text>✕</Text>
+          <Text style={expect.closeBtn}>✕</Text>
         </TouchableOpacity>
         </View>
       {/* 월 선택 모달 */}
@@ -219,23 +219,23 @@ export default function Home() {
       </View>
 
       <View style={styles.row}>
-        <View style={styles.box}><Text style={styles.day}>SUN</Text></View>
+        <View style={styles.box}><Text style={styles.day, styles.sun}>SUN</Text></View>
         <View style={styles.box}><Text style={styles.day}>MON</Text></View>
         <View style={styles.box}><Text style={styles.day}>TUE</Text></View>
         <View style={styles.box}><Text style={styles.day}>WED</Text></View>
         <View style={styles.box}><Text style={styles.day}>THU</Text></View>
         <View style={styles.box}><Text style={styles.day}>FRI</Text></View>
-        <View style={styles.box}><Text style={styles.day}>SAT</Text></View>
+        <View style={styles.box}><Text style={styles.day, styles.sat}>SAT</Text></View>
       </View>
       {generate()}
     </View>
 
     <View style={openSchedule ? styles.schedule : styles.none}>
       <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-        <Text style={styles.title}>{selectedDate.format("M[/]D[(]ddd[)]")}</Text>
-        <TouchableOpacity style={{ padding: 20 }}
+        <Text style={styles.scheduleTitle}>{selectedDate.format("M[/]D[(]ddd[)]")}</Text>
+        <TouchableOpacity style={{ padding: 12 }}
           onPress={() => setOpenSchedule(false)}>
-          <Text>✕</Text>
+          <Text style={styles.scheduleClose}>✕</Text>
         </TouchableOpacity>
       </View>
       {/* 일정 유무 확인해서 달력 하단에 랜더 */}
@@ -265,26 +265,51 @@ export default function Home() {
 
 const expect = StyleSheet.create({
   content : {
-    backgroundColor : "#d3c9ff",
+    backgroundColor : "rgba(59,35,166,.1)",
+    borderRadius: 5,
     position : "relative",
-    paddingLeft : 10,
+    paddingLeft : 15,
     width : "100%",
-    height : "17%",
-    marginBottom : 10
+    height : "15%",
+    marginBottom : 15,
+    marginTop: -5
   },
   text : {
+    position : "absolute",
+    top : "13%",
+    left: "5%",
     fontWeight : "700",
-    color : "#3b22a9",
-    paddingLeft : 20
+    color : "#3b23a6",
+    paddingLeft : 20,
   },
   icon : {
-    position : "relative",
-    top : "20%"
+    position : "absolute",
+    top : "10%",
+    left: "4%"
   },
   close : {
     position : "absolute",
-    right : "10%",
-    top : "20%"
+    right : "4%",
+    top : "13%"
+  },
+  closeBtn: {
+    color : "#3b23a6",
+    fontSize: 17,
+    fontWeight: "900"
+  },
+  textTwo: {
+    fontSize: 12,
+    paddingTop: 2,
+    position : "absolute",
+    top : "40%",
+    left: "11%"
+  },
+  textThree: {
+    fontSize: 12,
+    paddingTop: 2,
+    position : "absolute",
+    top : "65%",
+    left: "11%"
   }
 })
 
@@ -294,6 +319,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     padding: 10,
+    paddingTop: 0,
     backgroundColor: "#fff",
     height: "auto"
   },
@@ -315,6 +341,7 @@ const styles = StyleSheet.create({
     color: "#4a4a4a"
   },
   row: {
+    marginTop: 5,
     flexDirection: 'row',
     display: "flex",
   },
@@ -327,113 +354,141 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "grey"
   },
+  sun: {
+    fontSize: 12,
+    alignSelf: "center",
+    color: "orange"
+  },
+  sat: {
+    fontSize: 12,
+    alignSelf: "center",
+    color: "royalblue"
+  },
   full_dateBox4: {
-    borderColor: "grey",
+    borderColor: "rgba(204, 204, 204, 0.6)",
     borderTopWidth: 1,
     borderStyle: "solid",
     height: Dimensions.get('window').height / 8,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   full_dateBox_selected4: {
-    borderColor: "grey",
-    borderWidth: 1,
-    borderStyle: "solid",
+    // borderColor: "grey",
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    backgroundColor: "rgba(59,35,166,.1)",
     height: Dimensions.get('window').height / 8,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   full_dateBox5: {
-    borderColor: "grey",
+    borderColor: "rgba(204, 204, 204, 0.6)",
     borderTopWidth: 1,
     borderStyle: "solid",
     height: Dimensions.get('window').height / 10,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   full_dateBox_selected5: {
-    borderColor: "grey",
-    borderWidth: 1,
-    borderStyle: "solid",
+    // borderColor: "grey",
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    backgroundColor: "rgba(59,35,166,.1)",
     height: Dimensions.get('window').height / 10,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   full_dateBox6: {
-    borderColor: "grey",
+    borderColor: "rgba(204, 204, 204, 0.6)",
     borderTopWidth: 1,
     borderStyle: "solid",
     height: Dimensions.get('window').height / 12,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   full_dateBox_selected6: {
-    borderColor: "grey",
-    borderWidth: 1,
-    borderStyle: "solid",
+    // borderColor: "grey",
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    backgroundColor: "rgba(59,35,166,.1)",
     height: Dimensions.get('window').height / 12,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   top_dateBox4: {
-    borderColor: "grey",
+    borderColor: "rgba(204, 204, 204, 0.6)",
     borderTopWidth: 1,
     borderStyle: "solid",
     height: Dimensions.get('window').height / 11,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   top_dateBox_selected4: {
-    borderColor: "grey",
-    borderWidth: 1,
-    borderStyle: "solid",
+    // borderColor: "grey",
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    backgroundColor: "rgba(59,35,166,.1)",
     height: Dimensions.get('window').height / 11,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   top_dateBox5: {
-    borderColor: "grey",
+    borderColor: "rgba(204, 204, 204, 0.6)",
     borderTopWidth: 1,
     borderStyle: "solid",
     height: Dimensions.get('window').height / 14,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   top_dateBox_selected5: {
-    borderColor: "grey",
-    borderWidth: 1,
-    borderStyle: "solid",
+    // borderColor: "grey",
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    backgroundColor: "rgba(59,35,166,.1)",
     height: Dimensions.get('window').height / 14,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   top_dateBox6: {
-    borderColor: "grey",
+    borderColor: "rgba(204, 204, 204, 0.6)",
     borderTopWidth: 1,
     borderStyle: "solid",
     height: Dimensions.get('window').height / 16,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   top_dateBox_selected6: {
-    borderColor: "grey",
-    borderWidth: 1,
-    borderStyle: "solid",
+    // borderColor: "grey",
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    backgroundColor: "rgba(59,35,166,.1)",
     height: Dimensions.get('window').height / 16,
-    margin: 5,
+    marginTop: 5,
     paddingHorizontal: 2,
-    paddingVertical: 5
+    paddingVertical: 5,
+    paddingLeft: 5
   },
   font: {
     color: "#4a4a4a"
@@ -460,16 +515,26 @@ const styles = StyleSheet.create({
 
   schedule: {
     flex: 1,
-    marginVertical: 5,
+    marginVertical: -5,
     marginHorizontal: 10,
     padding: 5,
     backgroundColor: "#fff",
-    borderColor: "grey",
+    borderColor: "rgba(204, 204, 204, 0.6)",
     borderTopWidth: 1,
     borderStyle: "solid",
   },
-  scheduleList: {
+  scheduleTitle: {
     padding: 10,
+    paddingBottom: 15,
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#4a4a4a",
+  },
+  scheduleClose: {
+    fontSize: 17
+  },
+  scheduleList: {
+    // padding: 5,
     paddingLeft: 20
   },
   scheduleListEntry: {

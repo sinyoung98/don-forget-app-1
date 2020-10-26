@@ -61,12 +61,16 @@ export default function Mypage({ navigation }) {
             <TouchableOpacity onPress={changeNameHandler}>
               <Text style={{ padding: 15 }}>✔︎</Text>
             </TouchableOpacity>
-          </View> : <Text style={styles.name}>{userData.name}</Text>}
-          <Text style={{ color: "#4a4a4a" }}>{userData.email}</Text>
+          </View> : 
+          <>
+          <Text style={styles.info}>사용자 정보</Text>
+          <Text style={styles.name}>이름 : {userData.name}</Text>
+          <Text  style={styles.name} >이메일 : {userData.email}</Text>
+          </>}
         </View>
       </> : <></>}
 
-      <View style={{ backgroundColor: "whitesmoke", flexDirection: "row", justifyContent: "space-between", marginTop: "auto", marginBottom: 160, paddingHorizontal: 40 }}>
+      <View style={styles.buttonGroup}>
         <TouchableOpacity style={styles.button} onPress={() => setOpenName(!openName)}>
           <Text style={styles.button_text}>이름 변경</Text>
         </TouchableOpacity>
@@ -77,7 +81,7 @@ export default function Mypage({ navigation }) {
           <Text style={styles.button_text}>로그아웃</Text>
         </TouchableOpacity>
       </View>
-    </View>
+     </View>
   );
 }
 
@@ -93,14 +97,15 @@ const styles = StyleSheet.create({
     color: "#4a4a4a",
   },
   userInfo: {
-    backgroundColor: "whitesmoke",
+    backgroundColor: "#eeedf7",
     borderRadius: 10,
     padding: 30,
     margin: 15,
+    height : "23%"
   },
   name: {
-    color: "#4a4a4a",
-    fontSize: 25,
+    color: "#72717a",
+    fontSize: 14,
     fontWeight: "700",
   },
   input: {
@@ -112,13 +117,30 @@ const styles = StyleSheet.create({
     marginVertical: 3
   },
   button: {
-    borderRadius: 5,
-    backgroundColor: "whitesmoke",
-    margin: 5,
-    padding: 4
+    position : "relative",
+    top : "-10%" ,
+    borderRadius: 10,
+    backgroundColor : "#8888ff",
+    // margin: 5,
+    padding: 0,
+    marginLeft : 10
   },
   button_text: {
     padding: 10,
-    color: "#4a4a4a",
+    color: "white",
+    fontSize : 10,
+   fontWeight : "800"
   },
+  info : {
+    color : "#624EB8",
+    fontWeight: "800",
+    fontSize : 20,
+    marginBottom : 10
+  },
+  buttonGroup:{
+    flexDirection: 'row',
+    position : "absolute",
+    bottom : "16%",
+    left : "33%",
+  }
 })
