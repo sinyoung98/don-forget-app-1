@@ -52,6 +52,7 @@ export default function TopGift() {
                         let title = item.title;
                         title = title.replaceAll("<b>", "");
                         title = title.replaceAll("</b>", "");
+                        const price = new Intl.NumberFormat().format(Number(item.lprice)) 
                         if (title.length >= 22) {
                             title = title.slice(0, 22) + "..."
                         }
@@ -69,7 +70,7 @@ export default function TopGift() {
                                     source={{ uri: item.image }}
                                 />
                                 <Text style={styles.text}>{title}</Text>
-                                <Text style={styles.price}>{item.lprice} 원</Text>
+                                <Text style={styles.price}>{price} 원</Text>
                                 <Text style={styles.click}>조회수 {item.clickCount}</Text>
                             </TouchableOpacity>
                         )
