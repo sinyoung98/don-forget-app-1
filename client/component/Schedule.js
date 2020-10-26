@@ -179,7 +179,7 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
                   <Text style={styles.text}>{item.event_target}</Text>
                   <Text style={styles.textType}>{item.type}</Text>
                   <Text style={styles.gift}>{item.gift[0] === "선물" ?
-                    " " + item.gift.slice(3) : " ₩" + item.gift[1]}</Text>
+                    " " + item.gift[0] : " ₩" + new Intl.NumberFormat().format(Number(item.gift[1])) }</Text>
                 </TouchableOpacity>
               </>)}
           />
@@ -198,7 +198,7 @@ function GetSchedule({ id, navigation, update, setUpdate, isSearch, setSearch })
               <Text style={styles.text}>{item.event_target}</Text>
               <Text style={styles.textType}>{item.type}</Text>
               <Text style={styles.gift}>{item.gift[0] === "선물" ?
-                " " + item.gift.slice(3) : " ₩" + item.gift[1]}</Text>
+                " " + item.gift[0] : " ₩ " + item.gift[1]}</Text>
             </TouchableOpacity>
           </>)}
       />

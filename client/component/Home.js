@@ -249,7 +249,7 @@ export default function Home() {
                     <Text style={eventTypeColor[`${obj.type}`]}>{obj.giveandtake === "give" ? "|→ " : "|← "}</Text>
                     <Text style={styles.scheduleListEntry_name}>{obj.event_target} {obj.type}</Text>
                     <Text style={styles.scheduleListEntry_gift}>{obj.gift.slice(0, 2) === "선물" ?
-                      " " + obj.gift.slice(3) : " ₩" + obj.gift.slice(3)}</Text>
+                      " " + obj.gift[1] : " ₩" + new Intl.NumberFormat().format(Number(obj.gift[1]))}</Text>
                   </Text>
                 </View>
               )
