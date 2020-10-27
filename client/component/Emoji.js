@@ -57,7 +57,8 @@ export default function Emoji() {
                                 <TouchableOpacity style= {styles.copy}>
                                 <Text style={styles.copy} onPress = {() => {
                                     createAlert(item);
-                                    }}>Copy <Icon name="content-copy" style={styles.copyIcon}></Icon></Text>
+                                    }}>Copy</Text>
+                                    <Icon name="content-copy" style={styles.copyIcon}></Icon>
                                 </TouchableOpacity>
                             </TouchableOpacity>
                         )
@@ -163,13 +164,14 @@ const styles = StyleSheet.create({
     copy: {
         position: "absolute",
         fontSize: 13,
-        right : 3,
-        bottom : 8
+        right : 15,
+        bottom : 8,
     },
     copyIcon : {
         position : "absolute",
-        right : 0,
+        right : -1,
         color : "grey",
-        fontSize: 15
+        fontSize: 14,
+        top : -23
     }
 })
