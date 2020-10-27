@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet, TouchableOpacity, Alert, ScrollView, FlatList, Clipboard,  } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet, TouchableOpacity, Alert, ScrollView, FlatList, Clipboard, } from 'react-native';
 import axios from "axios";
 import * as Linking from "expo-linking";
 import { Ionicons } from '@expo/vector-icons';
@@ -22,14 +22,14 @@ export default function Emoji() {
     const [copied, setCopied] = useState(false);
 
     const createAlert = (item) =>
-    Alert.alert(
-      "",
-      `클립보드 복사하기`,
-      [
-        { text: "Copy", onPress: () => Clipboard.setString(`https://e.kakao.com/t/${item.titleUrl}`) }
-      ],
-      { cancelable: false }
-    );
+        Alert.alert(
+            "",
+            `클립보드 복사하기`,
+            [
+                { text: "Copy", onPress: () => Clipboard.setString(`https://e.kakao.com/t/${item.titleUrl}`) }
+            ],
+            { cancelable: false }
+        );
 
 
     return (
@@ -84,23 +84,22 @@ const styles = StyleSheet.create({
         fontWeight: "800",
         fontSize: 20,
         textAlign: "center",
-        marginTop: 30,
-        marginBottom: 30,
-        color: "black",
-        shadowRadius: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
+        marginBottom: 20,
+        color: "#4a4a4a",
+        // shadowRadius: 10,
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 3,
+        // },
+        // shadowOpacity: 0.29,
+        // shadowRadius: 4.65,
     },
     text: {
         fontSize: 14,
         marginTop: 20,
         fontSize: 14,
-        fontWeight : "700"
+        fontWeight: "700"
         // width: "70%",
         // paddingLeft: 10
     },
@@ -142,13 +141,13 @@ const styles = StyleSheet.create({
         color: "white"
     },
     click: {
-      position : "relative",
-      fontWeight : "400",
+        position: "relative",
+        fontWeight: "400",
     },
     price: {
-        position : "absolute",
+        position: "absolute",
         left: "13%",
-        bottom : "16%",
+        bottom: "16%",
         fontWeight: "700",
         fontSize: 20,
         marginTop: 10,
@@ -161,8 +160,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexWrap: "wrap",
     },
-    copy : {
-        position : "absolute",
+    copy: {
+        position: "absolute",
         fontSize: 13,
         right : 3,
         bottom : 8

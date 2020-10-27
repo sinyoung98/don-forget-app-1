@@ -54,43 +54,43 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
 
   function handleTagSearch(tag) {
 
-    if (tag === "카카오톡 이모티콘 순위"){
+    if (tag === "카카오톡 이모티콘 순위") {
       setEmoji(!kakaoEmoji);
     }
     else {
       axios.post(`https://don-forget-server.com/gift/find/?text=${tag}`)
-      .then((res) => res.data)
-      .then((data) => {
-        setSearchData(searchData.concat(data.slice(preItems, items)));
-        console.log(searchData);
-        setPreItems(preItems + 4);
-        setItems(items + 4);
-      })
-      .then(() => setSearchKeyword(tag))
-      .catch((err) => console.log("err!!"))
+        .then((res) => res.data)
+        .then((data) => {
+          setSearchData(searchData.concat(data.slice(preItems, items)));
+          console.log(searchData);
+          setPreItems(preItems + 4);
+          setItems(items + 4);
+        })
+        .then(() => setSearchKeyword(tag))
+        .catch((err) => console.log("err!!"))
     }
   }
 
-  function handleCount(item){
-    const {title, link, image, lprice, hprice, mallName, productId, productType, brand, maker, category1, category2, category3, category4} = item;
+  function handleCount(item) {
+    const { title, link, image, lprice, hprice, mallName, productId, productType, brand, maker, category1, category2, category3, category4 } = item;
     axios.post(`https://don-forget-server.com/gift/clickProduct`, {
-      category1 :category1,
-      category2 : category2, 
-      category3 : category3,
-      category4 : category4,
-      maker : maker,
-      brand : brand,
-      productType : productType,
-      productId : productId, 
-      mallName : mallName, 
-      hprice : hprice, 
-      lprice : lprice, 
-      image : image, 
-      link : link,
-      title : title
+      category1: category1,
+      category2: category2,
+      category3: category3,
+      category4: category4,
+      maker: maker,
+      brand: brand,
+      productType: productType,
+      productId: productId,
+      mallName: mallName,
+      hprice: hprice,
+      lprice: lprice,
+      image: image,
+      link: link,
+      title: title
     })
-    .then((res) => console.log(res.data))
-    .catch((err) => console.log(err))
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err))
   }
 
   return (
@@ -118,7 +118,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
           }}
         />
       </View>
-      <View style={searchKeyword !== ""? styles.none : styles.tags}>
+      <View style={searchKeyword !== "" ? styles.none : styles.tags}>
         {tags.map((tag, i) => {
           return (<TouchableOpacity key={i} style={curTag === tag ?  styles.curTag_btn : styles.tag_btn}
             onPress={() => {
@@ -135,28 +135,28 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
         searchKeyword !== "" ?
           <FlatList
             // style={listStyles.flatlist}
-            numColumns = {2}
+            numColumns={2}
             data={searchData}
             renderItem={(item) => {
               let title = item.item.title;
-                        title = title.replaceAll("<b>", "");
-                        title = title.replaceAll("</b>", "");
-                        if (title.length >= 26) {
-                          title = title.slice(0, 26) + "..." 
-                        }
-                        const price = new Intl.NumberFormat().format(Number(item.item.lprice)) 
+              title = title.replaceAll("<b>", "");
+              title = title.replaceAll("</b>", "");
+              if (title.length >= 26) {
+                title = title.slice(0, 26) + "..."
+              }
+              const price = new Intl.NumberFormat().format(Number(item.item.lprice))
               return (
                 <TouchableOpacity key={item.index} style={listStyles.list} onPress={() => {
                   Linking.openURL(item.item.link);
                   handleCount(item.item);
                 }}>
-                   <Image
+                  <Image
                     style={styles.image}
                     source={{ uri: item.item.image }}
                   />
                   <Text style={listStyles.text}>{title}</Text>
                   <Text style={listStyles.price}>{price}원</Text>
-                  <Text style={{fontSize : 12, left : 2}}>{item.item.category1}원</Text>
+                  <Text style={{ fontSize: 12, left: 2 }}>{item.item.category1}원</Text>
                 </TouchableOpacity>
               )
             }}
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     paddingLeft: 25,
-    marginBottom : "3%"
+    marginBottom: "3%"
   },
   tag_btn: {
     margin: 4,
@@ -259,10 +259,10 @@ const styles = StyleSheet.create({
     position: "relative",
     width: 150,
     height: 130,
-    borderRadius : 10
+    borderRadius: 10
   },
-  none :{
-    display : "none"
+  none: {
+    display: "none"
   }
 })
 
@@ -270,20 +270,20 @@ const styles = StyleSheet.create({
 const listStyles = StyleSheet.create({
   list: {
     position: "relative",
-    margin : 9,
+    margin: 9,
     width: "43%",
     borderBottomWidth: 1,
-    borderTopWidth : 1,
-    borderLeftWidth : 1,
-    borderRightWidth : 1, 
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
     borderColor: "black",
     backgroundColor: "white",
     borderRadius: 20,
     shadowRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
-        width: 0,
-        height: 3,
+      width: 0,
+      height: 3,
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
@@ -291,7 +291,7 @@ const listStyles = StyleSheet.create({
     padding: "2%",
     // flexWrap: 'wrap',
     // flexDirection: 'row',
-    height : 250,
+    height: 250,
     width: 170,
     // flexDirection: 'row',
     // flex : 1,
@@ -300,22 +300,22 @@ const listStyles = StyleSheet.create({
   flatlist: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    flex : 1 
+    flex: 1
   },
   text: {
     fontSize: 14,
-    marginTop : 10,
-    fontSize : 14
+    marginTop: 10,
+    fontSize: 14
     // width: "70%",
     // paddingLeft: 10
-},
-price: {
-  left: "2%",
-  fontWeight: "700",
-  fontSize : 20,
-  marginTop : 10,
-  color : "darkblue",
-  opacity : 0.7,
-  marginBottom : 7
-},
+  },
+  price: {
+    left: "2%",
+    fontWeight: "700",
+    fontSize: 20,
+    marginTop: 10,
+    color: "darkblue",
+    opacity: 0.7,
+    marginBottom: 7
+  },
 })
