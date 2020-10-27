@@ -5,6 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "facebookScheme": "fb1872331759575671",
+    "facebookAppId": "1872331759575671",
+    "facebookDisplayName": "don-forget",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -17,7 +20,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gijigae.donforget"
     },
     "web": {
       "favicon": "./assets/favicon.png"
