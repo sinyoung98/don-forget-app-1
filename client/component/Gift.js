@@ -18,6 +18,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
 
   const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "취직 축하 선물", "수능 응원", "카카오톡 이모티콘 순위"]
   const [kakaoEmoji, setEmoji] = useState(false);
+  const [curTag, setCurTag] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -103,6 +104,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
             setItems(4);
             setSearchData([]);
             setSearchKeyword(text);
+            setCurTag("");
           }}
           placeholder={`선물을 검색해주세요`}
           autoCapitalize="none"
@@ -118,10 +120,15 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
       </View>
       <View style={searchKeyword !== "" ? styles.none : styles.tags}>
         {tags.map((tag, i) => {
-          return (<TouchableOpacity key={i} style={styles.tag_btn}
+          return (<TouchableOpacity key={i} style={curTag === tag ?  styles.curTag_btn : styles.tag_btn}
             onPress={() => {
+              if (curTag === tag){
+                setCurTag("");
+              } else {
+                setCurTag(tag);
+              }
               handleTagSearch(tag);
-            }}><Text style={styles.tag_Text}>{tag}</Text></TouchableOpacity>)
+            }}><Text style={curTag === tag ? styles.curTag_Text : styles.tag_Text}>{tag}</Text></TouchableOpacity>)
         })}
       </View>
       {
@@ -221,6 +228,25 @@ const styles = StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.29,
+  },
+  curTag_btn: {
+    margin: 4,
+    backgroundColor: "#547eff",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "grey",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+  },
+  curTag_Text : {
+    fontSize: 12,
+    color: "white",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
   tag_Text: {
     fontSize: 12,
