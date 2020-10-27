@@ -76,7 +76,7 @@ function Tabs({ navigation, route }) {
         } else if (route.name === '경조사') {
           iconName = focused ? 'ios-list-box' : 'ios-list';
         } else if (route.name === '추천선물') {
-          iconName = 'ios-search'
+          iconName = 'ios-gift'
         } else if (route.name === '마이페이지') {
           iconName = "ios-contact"
         }
@@ -90,7 +90,6 @@ function Tabs({ navigation, route }) {
         inactiveTintColor: 'gray',
         style: {
           backgroundColor: "white",//color you want to change
-          paddingBottom: 6
         }
       }}>
       <BottomTab.Screen name="캘린더" component={Home} />

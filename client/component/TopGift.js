@@ -18,27 +18,27 @@ export default function TopGift() {
 
     const [topGiftList, setTopList] = useState([]);
 
-    function handleCount(item){
-        const {title, link, image, lprice, hprice, mallName, productId, productType, brand, maker, category1, category2, category3, category4} = item;
+    function handleCount(item) {
+        const { title, link, image, lprice, hprice, mallName, productId, productType, brand, maker, category1, category2, category3, category4 } = item;
         axios.post(`https://don-forget-server.com/gift/clickProduct`, {
-          category1 :category1,
-          category2 : category2, 
-          category3 : category3,
-          category4 : category4,
-          maker : maker,
-          brand : brand,
-          productType : productType,
-          productId : productId, 
-          mallName : mallName, 
-          hprice : hprice, 
-          lprice : lprice, 
-          image : image, 
-          link : link,
-          title : title
+            category1: category1,
+            category2: category2,
+            category3: category3,
+            category4: category4,
+            maker: maker,
+            brand: brand,
+            productType: productType,
+            productId: productId,
+            mallName: mallName,
+            hprice: hprice,
+            lprice: lprice,
+            image: image,
+            link: link,
+            title: title
         })
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err))
-      }
+            .then((res) => console.log(res.data))
+            .catch((err) => console.log(err))
+    }
 
 
     return (
@@ -52,7 +52,7 @@ export default function TopGift() {
                         let title = item.title;
                         title = title.replaceAll("<b>", "");
                         title = title.replaceAll("</b>", "");
-                        const price = new Intl.NumberFormat().format(Number(item.lprice)) 
+                        const price = new Intl.NumberFormat().format(Number(item.lprice))
                         if (title.length >= 22) {
                             title = title.slice(0, 22) + "..."
                         }
@@ -97,17 +97,16 @@ const styles = StyleSheet.create({
         fontWeight: "800",
         fontSize: 20,
         textAlign: "center",
-        marginTop: 30,
-        marginBottom: 30,
-        color: "black",
-        shadowRadius: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
+        marginBottom: 20,
+        color: "#4a4a4a",
+        // shadowRadius: 10,
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 3,
+        // },
+        // shadowOpacity: 0.29,
+        // shadowRadius: 4.65,
     },
     text: {
         fontSize: 14,
@@ -157,15 +156,15 @@ const styles = StyleSheet.create({
         color: "white"
     },
     click: {
-      position : "absolute",
-      fontWeight : "400",
-      bottom : "10%",
-      left : "16%"
+        position: "absolute",
+        fontWeight: "400",
+        bottom: "10%",
+        left: "16%"
     },
     price: {
-        position : "absolute",
+        position: "absolute",
         left: "13%",
-        bottom : "16%",
+        bottom: "16%",
         fontWeight: "700",
         fontSize: 20,
         marginTop: 10,
