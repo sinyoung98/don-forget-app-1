@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet, TouchableOpacity, Alert, ScrollView, FlatList } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet, TouchableOpacity, Alert, ScrollView, FlatList, Clipboard,  } from 'react-native';
 import axios from "axios";
 import * as Linking from "expo-linking";
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function Emoji() {
@@ -17,6 +18,17 @@ export default function Emoji() {
     }, [])
 
     const [topEmojiList, setTopList] = useState([]);
+    const [copied, setCopied] = useState(false);
+
+    const createAlert = (item) =>
+    Alert.alert(
+      "",
+      `클립보드 복사하기`,
+      [
+        { text: "Copy", onPress: () => Clipboard.setString(`https://e.kakao.com/t/${item.titleUrl}`) }
+      ],
+      { cancelable: false }
+    );
 
 
     return (
@@ -33,7 +45,6 @@ export default function Emoji() {
                             // }}>
                             <TouchableOpacity key={i} style={styles.list} onPress={() => {
                                 Linking.openURL(`https://e.kakao.com/t/${item.titleUrl}`);
-                                handleCount(item)
                             }}>
                                 <Text style={styles.number}>{i + 1}</Text>
                                 <Image
@@ -42,6 +53,11 @@ export default function Emoji() {
                                 />
                                 <Text style={styles.text}>{item.title}</Text>
                                 <Text style={styles.click}>{item.artist} </Text>
+                                <TouchableOpacity style= {styles.copy}>
+                                <Text style={styles.copy} onPress = {() => {
+                                    createAlert(item);
+                                    }}>Copy <Ionicons name="ios-checkmark-circle-outline" size={20} color="grey" /></Text>
+                                </TouchableOpacity>
                             </TouchableOpacity>
                         )
                     })
@@ -143,5 +159,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         flexWrap: "wrap",
-    }
+    },
+    copy : {
+        position : "absolute",
+        fontSize: 13,
+        right : 3,
+        bottom : 10
+    },
+    // copyIcon : {
+    //     position : "absolute",
+    //     right : 0,
+    //     color : "grey",
+    //     top : -20
+    // }
 })
