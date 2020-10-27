@@ -3,6 +3,7 @@ import { AsyncStorage, View, Text, TextInput, Image, Button, StyleSheet, Touchab
 import axios from "axios";
 import * as Linking from "expo-linking";
 import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 export default function Emoji() {
@@ -56,7 +57,7 @@ export default function Emoji() {
                                 <TouchableOpacity style= {styles.copy}>
                                 <Text style={styles.copy} onPress = {() => {
                                     createAlert(item);
-                                    }}>Copy <Ionicons name="ios-copy" size={13}/></Text>
+                                    }}>Copy <Icon name="content-copy" style={styles.copyIcon}></Icon></Text>
                                 </TouchableOpacity>
                             </TouchableOpacity>
                         )
@@ -164,12 +165,12 @@ const styles = StyleSheet.create({
         position : "absolute",
         fontSize: 13,
         right : 3,
-        bottom : 10
+        bottom : 8
     },
-    // copyIcon : {
-    //     position : "absolute",
-    //     right : 0,
-    //     color : "grey",
-    //     top : -20
-    // }
+    copyIcon : {
+        position : "absolute",
+        right : 0,
+        color : "grey",
+        fontSize: 15
+    }
 })
