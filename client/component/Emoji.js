@@ -56,7 +56,7 @@ export default function Emoji() {
                                 <TouchableOpacity style= {styles.copy}>
                                 <Text style={styles.copy} onPress = {() => {
                                     createAlert(item);
-                                    }}>Copy <Ionicons name="ios-checkmark-circle-outline" size={20} color="grey" /></Text>
+                                    }}>Copy <Ionicons name="ios-copy" size={13}/></Text>
                                 </TouchableOpacity>
                             </TouchableOpacity>
                         )
