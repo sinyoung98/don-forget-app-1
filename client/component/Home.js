@@ -18,7 +18,7 @@ export default function Home() {
   const [month, setMonth] = useState(selectedDate._locale._months[selectedDate.month()]);
   // 하단 일정 창 오픈
   const [openSchedule, setOpenSchedule] = useState(false);
-  
+
 
   //nextMonth
   const [nextMonth, setNext] = useState([]);
@@ -43,13 +43,13 @@ export default function Home() {
 
   const getNextInfo = (id) => {
     axios.get(`https://don-forget-server.com/schedule/expectNextCost/${id}`)
-    .then((res) => res.data)
-    .then((data) => {
-      console.log(data)
-      setNext(data)
-      console.log(nextMonth)
-    })
-    .catch((err)=> console.log("err!"))
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data)
+        setNext(data)
+        console.log(nextMonth)
+      })
+      .catch((err) => console.log("err!"))
   }
 
   const getSchedule = (id) => {
@@ -203,16 +203,16 @@ export default function Home() {
             setSelectedDate(moment().month(num).date(1))
           }}><Text>&gt;</Text></TouchableOpacity>
       </View>
-      
+
       <View style={isOpenNextMonth ? expect.content : styles.none}>
-      <Ionicons name="ios-checkmark-circle-outline" size={20} color="#3b22a9" style={expect.icon}/>
-        <Text style= {expect.text}> 다음달 {nextMonth[0]}개의 이벤트가 있어요!</Text>
+        <Ionicons name="ios-checkmark-circle-outline" size={20} color="#3b22a9" style={expect.icon} />
+        <Text style={expect.text}> 다음달 {nextMonth[0]}개의 이벤트가 있어요!</Text>
         <Text style={expect.textTwo}> 지출 예상 금액 : {nextMonth[1]} 원</Text>
         <Text style={expect.textThree}> 지출 예상 선물 : {nextMonth[2]} 개</Text>
         <TouchableOpacity style={expect.close} onPress={() => setOpenNextMonth(false)}>
           <Text style={expect.closeBtn}>✕</Text>
         </TouchableOpacity>
-        </View>
+      </View>
       {/* 월 선택 모달 */}
       <View style={openSelectMonth ? styles.selectMonth : styles.none}>
         {monthModal()}
@@ -248,7 +248,7 @@ export default function Home() {
                   <Text style={styles.scheduleListEntry}>
                     <Text style={eventTypeColor[`${obj.type}`]}>{obj.giveandtake === "give" ? "|→ " : "|← "}</Text>
                     <Text style={styles.scheduleListEntry_name}>{obj.event_target} {obj.type}</Text>
-                    <Text style={styles.scheduleListEntry_gift}>{obj.gift.slice(0, 2) === "선물" ?
+                    <Text style={styles.scheduleListEntry_gift}>{obj.gift[0] === "선물" ?
                       " " + obj.gift[1] : " ₩" + new Intl.NumberFormat().format(Number(obj.gift[1]))}</Text>
                   </Text>
                 </View>
@@ -264,51 +264,51 @@ export default function Home() {
 }
 
 const expect = StyleSheet.create({
-  content : {
-    backgroundColor : "rgba(59,35,166,.1)",
+  content: {
+    backgroundColor: "rgba(59,35,166,.1)",
     borderRadius: 5,
-    position : "relative",
-    paddingLeft : 15,
-    width : "100%",
-    height : "15%",
-    marginBottom : 15,
+    position: "relative",
+    paddingLeft: 15,
+    width: "100%",
+    height: "15%",
+    marginBottom: 15,
     marginTop: -5
   },
-  text : {
-    position : "absolute",
-    top : "13%",
+  text: {
+    position: "absolute",
+    top: "13%",
     left: "5%",
-    fontWeight : "700",
-    color : "#3b23a6",
-    paddingLeft : 20,
+    fontWeight: "700",
+    color: "#3b23a6",
+    paddingLeft: 20,
   },
-  icon : {
-    position : "absolute",
-    top : "10%",
+  icon: {
+    position: "absolute",
+    top: "10%",
     left: "4%"
   },
-  close : {
-    position : "absolute",
-    right : "4%",
-    top : "13%"
+  close: {
+    position: "absolute",
+    right: "4%",
+    top: "13%"
   },
   closeBtn: {
-    color : "#3b23a6",
+    color: "#3b23a6",
     fontSize: 17,
     fontWeight: "900"
   },
   textTwo: {
     fontSize: 12,
     paddingTop: 2,
-    position : "absolute",
-    top : "40%",
+    position: "absolute",
+    top: "40%",
     left: "11%"
   },
   textThree: {
     fontSize: 12,
     paddingTop: 2,
-    position : "absolute",
-    top : "65%",
+    position: "absolute",
+    top: "65%",
     left: "11%"
   }
 })
@@ -515,8 +515,9 @@ const styles = StyleSheet.create({
 
   schedule: {
     flex: 1,
-    marginVertical: -5,
+    marginTop: -5,
     marginHorizontal: 10,
+    marginBottom: 80,
     padding: 5,
     backgroundColor: "#fff",
     borderColor: "rgba(204, 204, 204, 0.6)",
@@ -534,8 +535,8 @@ const styles = StyleSheet.create({
     fontSize: 17
   },
   scheduleList: {
-    // padding: 5,
-    paddingLeft: 20
+    paddingLeft: 20,
+    marginBottom: 30
   },
   scheduleListEntry: {
     fontSize: 15,

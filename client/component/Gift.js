@@ -16,7 +16,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
   const [preItems, setPreItems] = useState(0);
   const [items, setItems] = useState(4);
 
-  const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "취직 축하 선물", "수능 응원", "카카오톡 이모티콘 순위"]
+  const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "수능 응원", "카카오톡 이모티콘 순위"]
   const [kakaoEmoji, setEmoji] = useState(false);
   const [curTag, setCurTag] = useState("");
 
@@ -120,9 +120,9 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
       </View>
       <View style={searchKeyword !== "" ? styles.none : styles.tags}>
         {tags.map((tag, i) => {
-          return (<TouchableOpacity key={i} style={curTag === tag ?  styles.curTag_btn : styles.tag_btn}
+          return (<TouchableOpacity key={i} style={curTag === tag ? styles.curTag_btn : styles.tag_btn}
             onPress={() => {
-              if (curTag === tag){
+              if (curTag === tag) {
                 setCurTag("");
               } else {
                 setCurTag(tag);
@@ -139,10 +139,10 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
             data={searchData}
             renderItem={(item) => {
               let title = item.item.title;
-              title = title.replaceAll("<b>", "");
-              title = title.replaceAll("</b>", "");
-              if (title.length >= 26) {
-                title = title.slice(0, 26) + "..."
+              title = title.replace(/<b>/gi, "");
+              title = title.replace(/<\/b>/gi, "");
+              if (title.length >= 24) {
+                title = title.slice(0, 24) + "..."
               }
               const price = new Intl.NumberFormat().format(Number(item.item.lprice))
               return (
@@ -156,7 +156,10 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
                   />
                   <Text style={listStyles.text}>{title}</Text>
                   <Text style={listStyles.price}>{price}원</Text>
-                  <Text style={{ fontSize: 12, left: 2 }}>{item.item.category1}원</Text>
+                  <Text style={{
+                    fontSize: 12, left: 2,
+                    color: "grey"
+                  }}>{item.item.category1}</Text>
                 </TouchableOpacity>
               )
             }}
@@ -242,7 +245,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.29,
   },
-  curTag_Text : {
+  curTag_Text: {
     fontSize: 12,
     color: "white",
     paddingVertical: 5,
@@ -257,8 +260,7 @@ const styles = StyleSheet.create({
   },
   image: {
     position: "relative",
-    width: 150,
-    height: 130,
+    height: 140,
     borderRadius: 10
   },
   none: {
@@ -271,14 +273,12 @@ const listStyles = StyleSheet.create({
   list: {
     position: "relative",
     margin: 9,
-    width: "43%",
+    width: "45%",
+    padding: "2%",
     borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: "black",
+    borderColor: "white",
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: 10,
     shadowRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -287,25 +287,17 @@ const listStyles = StyleSheet.create({
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-    elevation: 7,
-    padding: "2%",
-    // flexWrap: 'wrap',
-    // flexDirection: 'row',
-    height: 250,
-    width: 170,
-    // flexDirection: 'row',
-    // flex : 1,
-    // flexWrap:"wrap",
   },
   flatlist: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    flex: 1
+    flex: 1,
+    marginBottom: 50
   },
   text: {
     fontSize: 14,
     marginTop: 10,
-    fontSize: 14
+    fontSize: 14,
     // width: "70%",
     // paddingLeft: 10
   },
@@ -316,6 +308,6 @@ const listStyles = StyleSheet.create({
     marginTop: 10,
     color: "darkblue",
     opacity: 0.7,
-    marginBottom: 7
+    marginBottom: 7,
   },
 })
