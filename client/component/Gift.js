@@ -16,7 +16,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
   const [preItems, setPreItems] = useState(0);
   const [items, setItems] = useState(4);
 
-  const tags = ["20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "수능 응원", "카카오톡 이모티콘 순위"]
+  const tags = ["#카카오톡 이모티콘 순위", "20대 여자 생일 선물", "30대 남자 생일 선물", "입학 선물", "30대 여자 집들이 선물", "설 선물", "출산용품", "결혼 선물", "수능 응원"]
   const [kakaoEmoji, setEmoji] = useState(false);
   const [curTag, setCurTag] = useState("");
 
@@ -30,14 +30,6 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
     fetchData();
     console.log("userData:", userData);
   }, [])
-
-  // useEffect(() => {
-  //   if (useEffectSearch) {
-  //     handleSearch();
-  //     setSearch(false);
-  //     handleTagSearch();
-  //   }
-  // })
 
   function handleSearch() {
     console.log(searchKeyword)
@@ -54,7 +46,7 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
 
   function handleTagSearch(tag) {
 
-    if (tag === "카카오톡 이모티콘 순위") {
+    if (tag === "#카카오톡 이모티콘 순위") {
       setEmoji(!kakaoEmoji);
     }
     else {
@@ -120,15 +112,20 @@ export default function Gift({ navigation, useEffectSearch, setSearch }) {
       </View>
       <View style={searchKeyword !== "" ? styles.none : styles.tags}>
         {tags.map((tag, i) => {
-          return (<TouchableOpacity key={i} style={curTag === tag ? styles.curTag_btn : styles.tag_btn}
-            onPress={() => {
-              if (curTag === tag) {
-                setCurTag("");
-              } else {
-                setCurTag(tag);
-              }
-              handleTagSearch(tag);
-            }}><Text style={curTag === tag ? styles.curTag_Text : styles.tag_Text}>{tag}</Text></TouchableOpacity>)
+          return (
+            <TouchableOpacity key={i} style={(tag === "#카카오톡 이모티콘 순위") ? styles.KakaoTag : (curTag === tag) ? styles.curTag_btn : styles.tag_btn}
+              onPress={() => {
+                if (curTag === tag) {
+                  setCurTag("");
+                } else {
+                  setCurTag(tag);
+                }
+                handleTagSearch(tag);
+              }}>
+              <Image source={require('../kakaoIcon.png')} style={(tag === "#카카오톡 이모티콘 순위") ? styles.KakaoTag_logo : styles.none} />
+              <Text style={(tag === "#카카오톡 이모티콘 순위") ? styles.KakaoTag_Text : curTag === tag ? styles.curTag_Text : styles.tag_Text}>{tag}</Text>
+            </TouchableOpacity>
+          )
         })}
       </View>
       {
@@ -244,6 +241,34 @@ const styles = StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.29,
+  },
+  KakaoTag: {
+    flexDirection: "row",
+    margin: 4,
+    backgroundColor: "#ffe812",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "grey",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+  },
+  KakaoTag_logo: {
+    width: 22,
+    height: 23,
+    marginTop: 2,
+    marginBottom: "auto",
+    marginLeft: 5,
+    marginRight: 6,
+  },
+  KakaoTag_Text: {
+    fontSize: 12,
+    color: "#664740",
+    paddingVertical: 5,
+    paddingRight: 10,
   },
   curTag_Text: {
     fontSize: 12,

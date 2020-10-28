@@ -96,18 +96,23 @@ export default function Mypage({ navigation }) {
         </View>
 
         <View style={styles.userInfo}>
-          {openName ? <View style={{ flexDirection: "row" }}>
-            <TextInput placeholder="변경할 이름을 입력해주세요." autoCapitalize="none"
-              style={styles.input} onChangeText={text => setChangeName(text)} />
-            <TouchableOpacity onPress={changeNameHandler}>
-              <Text style={{ padding: 15 }}>✔︎</Text>
-            </TouchableOpacity>
-          </View> :
-            <>
-              <Text style={styles.info}>사용자 정보</Text>
-              <Text style={styles.name}>이름 : {userData.name}</Text>
-              <Text style={styles.name} >이메일 : {userData.email}</Text>
-            </>}
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.info}>사용자 정보</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.name}>이름 : </Text>
+              {openName ? <>
+                <TextInput placeholder="변경할 이름을 입력해주세요." autoCapitalize="none"
+                  style={styles.input} onChangeText={text => setChangeName(text)} />
+                <TouchableOpacity onPress={changeNameHandler}>
+                  <Text style={{ paddingHorizontal: 10, paddingVertical: 5 }}>✔︎</Text>
+                </TouchableOpacity>
+              </> :
+                <Text style={styles.name}>{userData.name}</Text>
+              }
+            </View>
+            <Text style={styles.name} >이메일 : {userData.email}</Text>
+          </View>
+
           <View style={styles.buttonGroup}>
             <TouchableOpacity style={styles.button} onPress={() => setOpenName(!openName)}>
               <Text style={styles.button_text}>이름 변경</Text>
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
   title: {
     margin: 25,
     marginBottom: 10,
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: "700",
     color: "#4a4a4a",
   },
@@ -162,14 +167,17 @@ const styles = StyleSheet.create({
     color: "#72717a",
     fontSize: 14,
     fontWeight: "700",
+    marginVertical: 5
   },
   input: {
     width: 200,
     borderColor: '#c5c5c5',
     borderWidth: 1,
     borderRadius: 5,
-    padding: 10,
-    marginVertical: 3
+    color: "#72717a",
+    fontSize: 14,
+    paddingHorizontal: 10,
+    backgroundColor: "white"
   },
   button: {
     borderRadius: 10,
