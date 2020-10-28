@@ -11,29 +11,29 @@ function Signin({ navigation }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const createAlert = (name) =>
-  Alert.alert(
-    "⚠️ 제목",
-    `${name}님 환영합니다`,
-    [
-      { text: "OK", onPress: () => console.log("OK Pressed") }
-    ],
-    { cancelable: false }
-  );
-  
+    Alert.alert(
+      "⚠️ 제목",
+      `${name}님 환영합니다`,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
   useEffect(() => {
     async function checkUser() {
       await AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
         let user = JSON.parse(result);
         return user;
       })
-      .then((result) => {
-        if (result) {
-          console.log(result);
-          navigation.replace("Tabs" , {userId : result.id});
-        } 
-      })
+        .then((result) => {
+          if (result) {
+            console.log(result);
+            navigation.replace("Tabs", { userId: result.id });
+          }
+        })
     }
     checkUser();
   }, [])
@@ -51,7 +51,7 @@ function Signin({ navigation }) {
         console.log("password:", password);
         AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(response));
         createAlert(response.name)
-        navigation.replace(`Tabs`, {userId : response.id})
+        navigation.replace(`Tabs`, { userId: response.id })
       })
       .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
         console.log("AsyncStorage:", result);
@@ -66,30 +66,30 @@ function Signin({ navigation }) {
         scopes: ['profile', 'email'],
       });
 
-      if(result.type === 'success') {
+      if (result.type === 'success') {
         axios.post('https://don-forget-server.com/user/signin', {
           email: ['google', result.user.email],
           name: result.user.name
         })
-        .then(res => res.data)
-        .then(res => {
-          AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
-          alert(`${res.name}님 환영합니다.`);
-          navigation.replace(`Tabs`, {userId : res.id})
-        })
-        .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
-          console.log("AsyncStorage:", result);
-        }))
-        .catch((err) => console.log(err));
+          .then(res => res.data)
+          .then(res => {
+            AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
+            alert(`${res.name}님 환영합니다.`);
+            navigation.replace(`Tabs`, { userId: res.id })
+          })
+          .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
+            console.log("AsyncStorage:", result);
+          }))
+          .catch((err) => console.log(err));
       } else {
         return { cancelled: true };
       }
     }
-    catch(e) {
+    catch (e) {
       return { error: true }
     }
   }
-  
+
   async function facebooklogIn() {
     try {
       await Facebook.initializeAsync({
@@ -114,16 +114,16 @@ function Signin({ navigation }) {
           email: ['facebook', response.data.email],
           name: response.data.name
         })
-        .then(res => res.data)
-        .then(res => {
-          AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
-          alert(`${res.name}님 환영합니다.`);
-          navigation.replace(`Tabs`, {userId : res.id})
-        })
-        .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
-          console.log("AsyncStorage:", result);
-        }))
-        .catch((err) => console.log(err));
+          .then(res => res.data)
+          .then(res => {
+            AsyncStorage.setItem("LOGIN_TOKEN", JSON.stringify(res));
+            alert(`${res.name}님 환영합니다.`);
+            navigation.replace(`Tabs`, { userId: res.id })
+          })
+          .then(() => AsyncStorage.getItem("LOGIN_TOKEN", (err, result) => {
+            console.log("AsyncStorage:", result);
+          }))
+          .catch((err) => console.log(err));
       } else {
         return { cancelled: true };
       }
@@ -243,8 +243,10 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
+    fontWeight: "700",
     textAlign: "center",
-    padding: 12
+    marginTop: "auto",
+    marginBottom: "auto"
   },
   link: {
     position: "relative",

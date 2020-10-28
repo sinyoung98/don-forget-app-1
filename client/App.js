@@ -6,8 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Intro from "./component/Intro"
 import Home from "./component/Home"
-import Schdule from "./component/Schedule"
-import Search from "./component/Search"
 import Gift from "./component/Gift"
 import Mypage from "./component/Mypage"
 import Signin from "./component/Signin"
