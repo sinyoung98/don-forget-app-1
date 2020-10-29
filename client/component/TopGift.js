@@ -44,7 +44,7 @@ export default function TopGift() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.h1}>
-        # 돈't forget 추천선물로 보는 Top 8
+        # 돈't forget 추천선물 Top 8
              </Text>
       <View style={styles.viewList}>
         {topGiftList.map((item, i) => {
