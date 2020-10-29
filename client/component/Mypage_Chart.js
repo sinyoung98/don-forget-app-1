@@ -8,6 +8,20 @@ function Chart(props) {
   const { id } = props;
   const [money, setMoney] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [gift, setGift] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [data, setData] = useState({
+    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    datasets: [
+      {
+        data: money,
+        color: () => `mediumseagreen`,
+      },
+      {
+        data: gift,
+        color: () => `mediumpurple`,
+      }
+    ],
+    legend: ["현금", "선물"]
+  })
 
   useEffect(() => {
     axios.get(`https://don-forget-server.com/schedule/statistics/${id}`)
@@ -25,13 +39,7 @@ function Chart(props) {
         // console.log("money:", money, 'gift:', gift);
         setMoney(money);
         setGift(gift);
-      })
-  })
-
-  return (
-    <View>
-      <LineChart
-        data={{
+        setData({
           labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
           datasets: [
             {
@@ -44,7 +52,14 @@ function Chart(props) {
             }
           ],
           legend: ["현금", "선물"]
-        }}
+        })
+      })
+  }, [])
+
+  return (
+    <View>
+      <LineChart
+        data={data}
         width={Dimensions.get("window").width * 0.98}
         height={256}
         withShadow={false}
